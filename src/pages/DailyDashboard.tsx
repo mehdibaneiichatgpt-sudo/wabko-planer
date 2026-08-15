@@ -20,7 +20,7 @@ import {
   summarize,
   taskProgress,
 } from '../lib/stats.js';
-import { formatDuration, isPresent, workedMinutes } from '../lib/time.js';
+import { attendanceIssue, formatDuration, isOvernightShop, isPresent, workedMinutes } from '../lib/time.js';
 import { CATEGORY_LABELS, CATEGORY_ORDER, type TaskCategory } from '../lib/types.js';
 import { usePlanner } from '../state/PlannerContext.js';
 
@@ -55,6 +55,8 @@ export function DailyDashboard() {
   const money = summarize(entriesForDay(data, selected));
   const isClosed = data.settings.closedWeekdays.includes(weekdayIndexOfKey(selected));
   const attendanceToday = data.attendance[selected] ?? {};
+  const shopHours = { openTime: data.settings.openTime, closeTime: data.settings.closeTime };
+  const overnight = isOvernightShop(shopHours.openTime, shopHours.closeTime);
 
   const weekBars = useMemo(
     () =>
@@ -339,7 +341,13 @@ export function DailyDashboard() {
                         onChange={(v) => setAttendance(selected, employee.id, { out: v })}
                         label={`ساعت خروج ${employee.name}`}
                       />
-                      <span className="shift-hours">{formatDuration(workedMinutes(record))}</span>
+                      <span className="shift-hours">
+                        {attendanceIssue(record, shopHours)?.level === 'error' ? (
+                          <span className="issue issue-error">⚠ ساعت‌ها را بررسی کن</span>
+                        ) : (
+                          formatDuration(workedMinutes(record, overnight))
+                        )}
+                      </span>
                     </li>
                   );
                 })}

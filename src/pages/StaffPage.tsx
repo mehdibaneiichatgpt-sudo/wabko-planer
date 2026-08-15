@@ -7,10 +7,12 @@ import { getDay } from '../lib/day.js';
 import { MONTHS, fa, formatShort, monthKeys, parseKey } from '../lib/jalali.js';
 import {
   anchoredTime,
+  attendanceIssue,
   averageOf,
   averageTime,
   formatClock,
   formatDuration,
+  isOvernightShop,
   isPresent,
   lunchMinutes,
   toHours,
@@ -39,6 +41,8 @@ export function StaffPage() {
 
   const employees = data.employees;
   const activeEmployees = employees.filter((e) => e.active);
+  const hours = { openTime: data.settings.openTime, closeTime: data.settings.closeTime };
+  const overnight = isOvernightShop(hours.openTime, hours.closeTime);
   const dayAttendance = data.attendance[selected] ?? {};
   const monthDays = useMemo(() => monthKeys(view.jy, view.jm), [view.jy, view.jm]);
 
@@ -57,11 +61,11 @@ export function StaffPage() {
           if (!isPresent(record)) continue;
           days += 1;
 
-          const shift = workedMinutes(record);
+          const shift = workedMinutes(record, overnight);
           minutes += shift;
           if (shift > 0) worked.push(shift);
 
-          const lunch = lunchMinutes(record);
+          const lunch = lunchMinutes(record, overnight);
           if (lunch > 0) lunches.push(lunch);
 
           for (const field of TIME_FIELDS) {
@@ -87,7 +91,7 @@ export function StaffPage() {
           },
         };
       }),
-    [data.attendance, employees, monthDays],
+    [data.attendance, employees, monthDays, overnight],
   );
 
   /** همان میانگین‌ها، این بار برای کل فروشگاه */
@@ -129,7 +133,7 @@ export function StaffPage() {
 
   const presentCount = activeEmployees.filter((e) => isPresent(dayAttendance[e.id])).length;
   const dayMinutes = activeEmployees.reduce(
-    (sum, e) => sum + workedMinutes(dayAttendance[e.id]),
+    (sum, e) => sum + workedMinutes(dayAttendance[e.id], overnight),
     0,
   );
 
@@ -250,7 +254,9 @@ export function StaffPage() {
           <section className="card scroll-card">
             <div className="card-head">
               <h2 className="card-title">حضور و غیاب {formatShort(selected)}</h2>
-              <span className="group-count">ساعت‌ها را به شکل ۰۹:۳۰ وارد کن</span>
+              <span className="group-count">
+                ساعت کاری فروشگاه: {fa(hours.openTime)} تا {fa(hours.closeTime)}
+              </span>
             </div>
             <div className="streak-table-wrap">
               <table className="entry-table attendance-table">
@@ -264,13 +270,15 @@ export function StaffPage() {
                     <th>کارکرد خالص</th>
                     <th>کارهای سپرده‌شده</th>
                     <th>یادداشت</th>
+                    <th />
                   </tr>
                 </thead>
                 <tbody>
                   {activeEmployees.map((employee) => {
                     const record = dayAttendance[employee.id];
                     const assigned = assignedToday.get(employee.id);
-                    const worked = workedMinutes(record);
+                    const worked = workedMinutes(record, overnight);
+                    const issue = attendanceIssue(record, hours);
                     return (
                       <tr key={employee.id}>
                         <th>
@@ -284,11 +292,29 @@ export function StaffPage() {
                               value={record?.[f.key] ?? ''}
                               onChange={(v) => setAttendance(selected, employee.id, { [f.key]: v })}
                               label={`${f.label} ${employee.name}`}
+                              className={
+                                issue?.fields.includes(f.key) ? `flagged flagged-${issue.level}` : ''
+                              }
                             />
                           </td>
                         ))}
-                        <td className="muted">{formatDuration(lunchMinutes(record))}</td>
-                        <td className={worked > 0 ? 'pos' : undefined}>{formatDuration(worked)}</td>
+                        <td className="muted">{formatDuration(lunchMinutes(record, overnight))}</td>
+                        <td className={worked > 0 ? 'pos' : undefined}>
+                          {issue?.level === 'error' ? (
+                            <span className="issue issue-error" title={issue.message}>
+                              ⚠ {issue.message}
+                            </span>
+                          ) : (
+                            <>
+                              {formatDuration(worked)}
+                              {issue?.level === 'warn' && (
+                                <span className="issue issue-warn" title={issue.message}>
+                                  ⚠ {issue.message}
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </td>
                         <td>
                           {assigned ? (
                             <span className="group-count">
@@ -308,6 +334,21 @@ export function StaffPage() {
                             }
                             aria-label={`یادداشت ${employee.name}`}
                           />
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            className="ghost-btn tiny-btn"
+                            onClick={() =>
+                              setAttendance(selected, employee.id, {
+                                in: hours.openTime,
+                                out: hours.closeTime,
+                              })
+                            }
+                            title={`ثبت شیفت کامل ${fa(hours.openTime)} تا ${fa(hours.closeTime)}`}
+                          >
+                            شیفت کامل
+                          </button>
                         </td>
                       </tr>
                     );

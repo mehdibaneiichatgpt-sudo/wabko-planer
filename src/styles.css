@@ -1209,6 +1209,48 @@ main {
   white-space: nowrap;
 }
 
+.issue {
+  display: inline-block;
+  font-size: 0.72rem;
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+  white-space: nowrap;
+}
+
+.issue-error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.issue-warn {
+  background: #fef3c7;
+  color: #b45309;
+  margin-inline-start: 0.35rem;
+}
+
+.flagged-error {
+  border-color: var(--neg);
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.flagged-warn {
+  border-color: #f59e0b;
+  background: #fffbeb;
+  color: #b45309;
+}
+
+.tiny-btn {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.hours-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .clock {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;

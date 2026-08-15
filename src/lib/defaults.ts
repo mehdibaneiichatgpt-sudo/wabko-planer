@@ -93,6 +93,8 @@ export function defaultData(): PlannerData {
     settings: {
       shopName: 'فروشگاه من',
       currency: 'تومان',
+      openTime: '09:00',
+      closeTime: '21:00',
       closedWeekdays: [6],
       saleCategories: ['فروش حضوری', 'فروش آنلاین', 'فروش عمده', 'سایر درآمد'],
       expenseCategories: [

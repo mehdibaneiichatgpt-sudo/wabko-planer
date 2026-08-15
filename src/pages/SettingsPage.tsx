@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react';
+import { TimeInput } from '../components/TimeInput.js';
 import { makeId } from '../lib/defaults.js';
 import { WEEKDAYS, fa } from '../lib/jalali.js';
 import { clearData, exportData, importData } from '../lib/storage.js';
+import { isOvernightShop } from '../lib/time.js';
 import {
   CATEGORY_LABELS,
   CATEGORY_ORDER,
@@ -80,6 +82,26 @@ export function SettingsPage() {
             value={data.settings.currency}
             onChange={(e) => updateSettings({ currency: e.target.value })}
           />
+
+          <span className="field-label">ساعت کاری فروشگاه</span>
+          <div className="hours-row">
+            <TimeInput
+              value={data.settings.openTime}
+              onChange={(v) => updateSettings({ openTime: v })}
+              label="ساعت باز شدن فروشگاه"
+            />
+            <span className="muted">تا</span>
+            <TimeInput
+              value={data.settings.closeTime}
+              onChange={(v) => updateSettings({ closeTime: v })}
+              label="ساعت بسته شدن فروشگاه"
+            />
+          </div>
+          <p className="muted">
+            {isOvernightShop(data.settings.openTime, data.settings.closeTime)
+              ? 'ساعت بسته شدن بعد از نیمه‌شب است، پس شیفت‌هایی که از نیمه‌شب رد می‌شوند درست حساب می‌شوند.'
+              : 'ساعت خروجی که قبل از ورود باشد، به‌جای شیفت شبانه به‌عنوان اشتباه علامت می‌خورد.'}
+          </p>
 
           <span className="field-label">روزهای تعطیل</span>
           <div className="weekday-picker">

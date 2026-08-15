@@ -75,6 +75,9 @@ export interface FinanceEntry {
 export interface Settings {
   shopName: string;
   currency: string;
+  /** ساعت باز و بسته شدن فروشگاه به شکل «HH:MM» */
+  openTime: string;
+  closeTime: string;
   /** روزهای تعطیل هفتگی (۰ شنبه … ۶ جمعه) */
   closedWeekdays: number[];
   saleCategories: string[];

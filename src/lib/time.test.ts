@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import {
   anchoredTime,
+  attendanceIssue,
+  isOvernightShop,
   averageOf,
   averageTime,
   formatClock,
@@ -68,13 +70,72 @@ check('نهار نیمه‌ثبت‌شده نادیده گرفته می‌شود
   assert.equal(workedMinutes(r), 8 * 60);
 });
 
-check('شیفت شب که از نیمه‌شب رد می‌شود', () => {
-  // ورود ۱۶:۰۰ و خروج ۰۱:۰۰ یعنی ۹ ساعت
-  assert.equal(workedMinutes(rec({ in: '16:00', out: '01:00' })), 9 * 60);
-  // نهار ۲۳:۳۰ تا ۰۰:۱۵ هم باید درست حساب شود
+check('شیفت شب فقط برای فروشگاه بعد از نیمه‌شب حساب می‌شود', () => {
+  const night = rec({ in: '16:00', out: '01:00' });
+  // فروشگاهی که تا ۰۲:۰۰ باز است: ۹ ساعت
+  assert.equal(workedMinutes(night, true), 9 * 60);
+  // فروشگاهی که ۲۱:۰۰ می‌بندد: این ورودی اشتباه است، نه شیفت ۹ ساعته
+  assert.equal(workedMinutes(night), 0);
+
   const r = rec({ in: '16:00', out: '01:00', lunchOut: '23:30', lunchIn: '00:15' });
-  assert.equal(lunchMinutes(r), 45);
-  assert.equal(workedMinutes(r), 9 * 60 - 45);
+  assert.equal(lunchMinutes(r, true), 45);
+  assert.equal(workedMinutes(r, true), 9 * 60 - 45);
+});
+
+check('تشخیص ساعت کاری شبانه', () => {
+  assert.equal(isOvernightShop('09:00', '21:00'), false);
+  assert.equal(isOvernightShop('16:00', '02:00'), true);
+  assert.equal(isOvernightShop('', ''), false);
+});
+
+check('خطای خروج قبل از ورود', () => {
+  const hours = { openTime: '09:00', closeTime: '21:00' };
+  // اشتباه تایپی رایج: ۰۸:۰۰ به‌جای ۱۸:۰۰
+  const typo = rec({ in: '09:00', out: '08:00' });
+  const issue = attendanceIssue(typo, hours);
+  assert.equal(issue?.level, 'error');
+  assert.equal(issue?.message, 'خروج قبل از ورود است');
+  // و کارکرد نباید ۲۳ ساعت شود
+  assert.equal(workedMinutes(typo), 0);
+
+  // همین ورودی برای فروشگاه شبانه ایراد ندارد
+  assert.equal(attendanceIssue(typo, { openTime: '16:00', closeTime: '02:00' }), null);
+});
+
+check('خطاهای ترتیب نهار', () => {
+  const hours = { openTime: '09:00', closeTime: '21:00' };
+  assert.equal(
+    attendanceIssue(rec({ in: '09:00', lunchOut: '08:00' }), hours)?.message,
+    'نهار قبل از ورود است',
+  );
+  assert.equal(
+    attendanceIssue(rec({ in: '09:00', lunchOut: '14:00', lunchIn: '13:00' }), hours)?.message,
+    'برگشت از نهار قبل از رفتن است',
+  );
+  assert.equal(
+    attendanceIssue(rec({ in: '09:00', lunchOut: '13:00', lunchIn: '19:00', out: '18:00' }), hours)
+      ?.message,
+    'برگشت از نهار بعد از خروج است',
+  );
+  assert.equal(
+    attendanceIssue(rec({ out: '18:00' }), hours)?.message,
+    'ساعت ورود ثبت نشده',
+  );
+});
+
+check('هشدار بیرون از ساعت کاری', () => {
+  const hours = { openTime: '09:00', closeTime: '21:00' };
+  const late = attendanceIssue(rec({ in: '09:00', out: '22:30' }), hours);
+  assert.equal(late?.level, 'warn');
+  assert.deepEqual(late?.fields, ['out']);
+
+  const early = attendanceIssue(rec({ in: '07:00', out: '15:00' }), hours);
+  assert.equal(early?.level, 'warn');
+  assert.deepEqual(early?.fields, ['in']);
+
+  // شیفت داخل ساعت کاری هیچ ایرادی ندارد
+  assert.equal(attendanceIssue(rec({ in: '09:00', out: '18:00' }), hours), null);
+  assert.equal(attendanceIssue(rec(), hours), null);
 });
 
 check('رکورد ناقص کارکرد صفر دارد', () => {
