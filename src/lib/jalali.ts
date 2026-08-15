@@ -229,12 +229,24 @@ export function monthKeys(jy: number, jm: number): string[] {
 }
 
 /**
- * تقسیم روزهای ماه به چهار «هفته» به سبک نمونه‌ها:
- * هفتهٔ اول تا سوم هفت‌روزه و هفتهٔ چهارم بقیهٔ ماه.
+ * تقسیم روزهای ماه به پنج «هفته» به سبک نمونه‌ها: چهار هفتهٔ هفت‌روزه و
+ * هفتهٔ پنجم شامل باقی‌ماندهٔ ماه (روز ۲۹ به بعد). در اسفندِ غیرکبیسه
+ * هفتهٔ پنجم فقط یک روز دارد.
  */
 export function monthWeekBuckets(jy: number, jm: number): string[][] {
   const keys = monthKeys(jy, jm);
-  return [keys.slice(0, 7), keys.slice(7, 14), keys.slice(14, 21), keys.slice(21)];
+  return [
+    keys.slice(0, 7),
+    keys.slice(7, 14),
+    keys.slice(14, 21),
+    keys.slice(21, 28),
+    keys.slice(28),
+  ];
+}
+
+/** شمارهٔ هفتهٔ ماه (۰ تا ۴) برای یک روز */
+export function monthWeekIndex(key: string): number {
+  return Math.min(4, Math.floor((parseKey(key).jd - 1) / 7));
 }
 
 /* ------------------------------------------------------------------ */

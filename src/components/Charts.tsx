@@ -117,6 +117,89 @@ export function BarChart({ data, max, unit = 'percent', height = 150 }: BarChart
   );
 }
 
+interface AreaChartProps {
+  data: number[];
+  height?: number;
+  color?: string;
+}
+
+/** روند پیشرفت روزانه به شکل منحنی نرم */
+export function AreaChart({ data, height = 120, color = 'var(--brand)' }: AreaChartProps) {
+  if (data.length < 2) return <div className="areachart-empty muted">داده‌ای برای نمایش نیست.</div>;
+
+  const width = 600;
+  const pad = 6;
+  const stepX = (width - pad * 2) / (data.length - 1);
+  const points = data.map((value, i) => ({
+    x: pad + i * stepX,
+    y: pad + (1 - Math.max(0, Math.min(100, value)) / 100) * (height - pad * 2),
+  }));
+
+  // نرم‌کردن منحنی با نقاط کنترلی افقی بین هر دو نقطهٔ متوالی
+  let line = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 1; i < points.length; i += 1) {
+    const prev = points[i - 1];
+    const curr = points[i];
+    const cx = (prev.x + curr.x) / 2;
+    line += ` C ${cx} ${prev.y}, ${cx} ${curr.y}, ${curr.x} ${curr.y}`;
+  }
+  const area = `${line} L ${points[points.length - 1].x} ${height - pad} L ${points[0].x} ${height - pad} Z`;
+
+  return (
+    <svg
+      className="areachart"
+      viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="none"
+      style={{ height }}
+      role="img"
+      aria-label="روند پیشرفت روزانه"
+    >
+      <defs>
+        <linearGradient id="area-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.28" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.02" />
+        </linearGradient>
+      </defs>
+      <path d={area} fill="url(#area-fill)" />
+      <path d={line} fill="none" stroke={color} strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
+    </svg>
+  );
+}
+
+export interface RankDatum {
+  label: string;
+  emoji?: string;
+  value: number;
+  color: string;
+}
+
+/** نمودار میله‌ای افقی برای رتبه‌بندی عادت‌ها */
+export function RankChart({ data }: { data: RankDatum[] }) {
+  if (data.length === 0) return <p className="muted">هنوز داده‌ای ثبت نشده است.</p>;
+  const peak = Math.max(1, ...data.map((d) => d.value));
+
+  return (
+    <ul className="rank-chart">
+      {data.map((d) => (
+        <li key={d.label}>
+          <span className="rank-label">
+            {d.emoji && <span className="habit-emoji">{d.emoji}</span>}
+            {d.label}
+          </span>
+          <span className="rank-track">
+            <span
+              className="rank-fill"
+              style={{ width: `${Math.max((d.value / peak) * 100, d.value > 0 ? 6 : 0)}%`, background: d.color }}
+            >
+              {d.value > 0 && <em>{fa(d.value)}</em>}
+            </span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 interface ProgressBarProps {
   percent: number;
   color?: string;

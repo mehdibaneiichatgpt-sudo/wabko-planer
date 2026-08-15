@@ -111,6 +111,7 @@ export function defaultData(): PlannerData {
     dailyLog: {},
     weeklyLog: {},
     monthlyLog: {},
+    monthNotes: {},
     finance: [],
   };
 }

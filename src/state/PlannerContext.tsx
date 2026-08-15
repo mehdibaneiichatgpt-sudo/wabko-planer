@@ -42,6 +42,8 @@ interface PlannerContextValue {
   saveTemplate: (template: TaskTemplate) => void;
   removeTemplate: (templateId: string) => void;
 
+  setMonthNote: (monthId: string, text: string) => void;
+
   addEntry: (entry: Omit<FinanceEntry, 'id'>) => void;
   removeEntry: (entryId: string) => void;
 
@@ -186,6 +188,10 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const setMonthNote = useCallback((id: string, text: string) => {
+    setData((prev) => ({ ...prev, monthNotes: { ...prev.monthNotes, [id]: text } }));
+  }, []);
+
   const addEntry = useCallback((entry: Omit<FinanceEntry, 'id'>) => {
     setData((prev) => ({
       ...prev,
@@ -220,6 +226,7 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       removeHabit,
       saveTemplate,
       removeTemplate,
+      setMonthNote,
       addEntry,
       removeEntry,
       updateSettings,
@@ -239,6 +246,7 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       removeHabit,
       saveTemplate,
       removeTemplate,
+      setMonthNote,
       addEntry,
       removeEntry,
       updateSettings,

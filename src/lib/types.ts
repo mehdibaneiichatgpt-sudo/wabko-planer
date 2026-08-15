@@ -74,6 +74,8 @@ export interface PlannerData {
   weeklyLog: Record<string, Record<string, boolean>>;
   /** عادت ماهانه: شناسهٔ ماه → شناسهٔ عادت → انجام شد */
   monthlyLog: Record<string, Record<string, boolean>>;
+  /** یادداشت آزاد هر ماه: شناسهٔ ماه → متن */
+  monthNotes: Record<string, string>;
   finance: FinanceEntry[];
 }
 

@@ -7,6 +7,7 @@ import {
   isLeapJalaaliYear,
   jalaaliMonthLength,
   monthWeekBuckets,
+  monthWeekIndex,
   parseKey,
   startOfWeek,
   toGregorian,
@@ -83,13 +84,29 @@ check('هفته همیشه هفت روز از شنبه تا جمعه است', ()
   assert.equal(weekdayIndexOfKey(week[0]), 0);
 });
 
-check('تقسیم ماه به چهار هفته همهٔ روزها را پوشش می‌دهد', () => {
+check('تقسیم ماه به پنج هفته همهٔ روزها را پوشش می‌دهد', () => {
   for (const jm of [1, 7, 12]) {
     const buckets = monthWeekBuckets(1405, jm);
-    assert.equal(buckets.length, 4);
+    assert.equal(buckets.length, 5);
     const total = buckets.reduce((sum, b) => sum + b.length, 0);
     assert.equal(total, jalaaliMonthLength(1405, jm));
+    // چهار هفتهٔ اول همیشه هفت‌روزه‌اند
+    for (let i = 0; i < 4; i += 1) assert.equal(buckets[i].length, 7);
   }
+
+  // مرداد ۳۱ روزه: هفتهٔ پنجم سه روز دارد
+  assert.deepEqual(monthWeekBuckets(1405, 5)[4], ['1405-05-29', '1405-05-30', '1405-05-31']);
+  // اسفند ۱۴۰۵ غیرکبیسه و ۲۹ روزه: هفتهٔ پنجم فقط یک روز
+  assert.deepEqual(monthWeekBuckets(1405, 12)[4], ['1405-12-29']);
+});
+
+check('شمارهٔ هفتهٔ ماه', () => {
+  assert.equal(monthWeekIndex('1405-05-01'), 0);
+  assert.equal(monthWeekIndex('1405-05-07'), 0);
+  assert.equal(monthWeekIndex('1405-05-08'), 1);
+  assert.equal(monthWeekIndex('1405-05-28'), 3);
+  assert.equal(monthWeekIndex('1405-05-29'), 4);
+  assert.equal(monthWeekIndex('1405-05-31'), 4);
 });
 
 check('قالب‌بندی فارسی', () => {
