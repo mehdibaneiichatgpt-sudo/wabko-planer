@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { BarChart, Donut } from '../components/Charts.js';
 import { DatePicker } from '../components/DatePicker.js';
+import { TimeInput } from '../components/TimeInput.js';
 import { getDay } from '../lib/day.js';
 import {
   WEEKDAYS_SHORT,
@@ -19,6 +20,7 @@ import {
   summarize,
   taskProgress,
 } from '../lib/stats.js';
+import { formatDuration, isPresent, workedMinutes } from '../lib/time.js';
 import { CATEGORY_LABELS, CATEGORY_ORDER, type TaskCategory } from '../lib/types.js';
 import { usePlanner } from '../state/PlannerContext.js';
 
@@ -35,7 +37,11 @@ export function DailyDashboard() {
     resetDayFromTemplates,
     toggleHabit,
     addEntry,
+    assignTask,
+    setAttendance,
   } = usePlanner();
+
+  const activeEmployees = data.employees.filter((e) => e.active);
 
   const [newTask, setNewTask] = useState('');
   const [newTaskCat, setNewTaskCat] = useState<TaskCategory>('during');
@@ -48,6 +54,7 @@ export function DailyDashboard() {
   const dailyHabits = activeHabits(data, 'daily');
   const money = summarize(entriesForDay(data, selected));
   const isClosed = data.settings.closedWeekdays.includes(weekdayIndexOfKey(selected));
+  const attendanceToday = data.attendance[selected] ?? {};
 
   const weekBars = useMemo(
     () =>
@@ -196,6 +203,24 @@ export function DailyDashboard() {
                       <span className="task-title">{task.title}</span>
                     </label>
                     {task.priority === 'high' && <span className="tag tag-high">مهم</span>}
+                    {activeEmployees.length > 0 && (
+                      <select
+                        className="assignee-select"
+                        value={task.assignee ?? ''}
+                        onChange={(e) => assignTask(selected, task.id, e.target.value)}
+                        aria-label={`سپردن «${task.title}» به کارمند`}
+                        style={{
+                          color: activeEmployees.find((e) => e.id === task.assignee)?.color,
+                        }}
+                      >
+                        <option value="">— بدون مسئول</option>
+                        {activeEmployees.map((employee) => (
+                          <option key={employee.id} value={employee.id}>
+                            {employee.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
                     <button
                       type="button"
                       className="remove-btn"
@@ -286,6 +311,43 @@ export function DailyDashboard() {
             </div>
           </div>
 
+          {activeEmployees.length > 0 && (
+            <div className="card">
+              <div className="card-head">
+                <h2 className="card-title">حضور امروز</h2>
+                <span className="group-count">
+                  {fa(activeEmployees.filter((e) => isPresent(attendanceToday[e.id])).length)} از{' '}
+                  {fa(activeEmployees.length)}
+                </span>
+              </div>
+              <ul className="shift-list">
+                {activeEmployees.map((employee) => {
+                  const record = attendanceToday[employee.id];
+                  return (
+                    <li key={employee.id}>
+                      <span className="shift-name">
+                        <span className="dot" style={{ background: employee.color }} />
+                        {employee.name}
+                      </span>
+                      <TimeInput
+                        value={record?.in ?? ''}
+                        onChange={(v) => setAttendance(selected, employee.id, { in: v })}
+                        label={`ساعت ورود ${employee.name}`}
+                      />
+                      <TimeInput
+                        value={record?.out ?? ''}
+                        onChange={(v) => setAttendance(selected, employee.id, { out: v })}
+                        label={`ساعت خروج ${employee.name}`}
+                      />
+                      <span className="shift-hours">{formatDuration(workedMinutes(record))}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+              <p className="muted">برای ثبت نهار و گزارش ماهانه به بخش کارکنان برو.</p>
+            </div>
+          )}
+
           <div className="card">
             <h2 className="card-title">یادداشت روز</h2>
             <textarea
@@ -294,16 +356,6 @@ export function DailyDashboard() {
               placeholder="اتفاق مهم امروز، درخواست مشتری، کالای ناموجود…"
               value={day.note}
               onChange={(e) => updateDay(selected, { note: e.target.value })}
-            />
-            <label className="field-label" htmlFor="staff">
-              پرسنل شیفت
-            </label>
-            <input
-              id="staff"
-              className="input"
-              placeholder="نام فروشنده‌های امروز"
-              value={day.staff}
-              onChange={(e) => updateDay(selected, { staff: e.target.value })}
             />
           </div>
         </div>

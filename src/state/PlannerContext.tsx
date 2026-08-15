@@ -11,8 +11,11 @@ import { makeId } from '../lib/defaults.js';
 import { emptyDay, getDay, tasksFromTemplates } from '../lib/day.js';
 import { monthId, todayKey, weekId } from '../lib/jalali.js';
 import { loadData, saveData } from '../lib/storage.js';
+import { emptyAttendance } from '../lib/time.js';
 import type {
+  Attendance,
   DayRecord,
+  Employee,
   FinanceEntry,
   Habit,
   PlannerData,
@@ -43,6 +46,11 @@ interface PlannerContextValue {
   removeTemplate: (templateId: string) => void;
 
   setMonthNote: (monthId: string, text: string) => void;
+
+  assignTask: (key: string, taskId: string, employeeId: string) => void;
+  saveEmployee: (employee: Employee) => void;
+  removeEmployee: (employeeId: string) => void;
+  setAttendance: (key: string, employeeId: string, patch: Partial<Attendance>) => void;
 
   addEntry: (entry: Omit<FinanceEntry, 'id'>) => void;
   removeEntry: (entryId: string) => void;
@@ -192,6 +200,72 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
     setData((prev) => ({ ...prev, monthNotes: { ...prev.monthNotes, [id]: text } }));
   }, []);
 
+  const assignTask = useCallback(
+    (key: string, taskId: string, employeeId: string) =>
+      editDay(key, (day) => ({
+        ...day,
+        tasks: day.tasks.map((t) =>
+          t.id === taskId ? { ...t, assignee: employeeId || undefined } : t,
+        ),
+      })),
+    [editDay],
+  );
+
+  const saveEmployee = useCallback((employee: Employee) => {
+    setData((prev) => {
+      const exists = prev.employees.some((e) => e.id === employee.id);
+      return {
+        ...prev,
+        employees: exists
+          ? prev.employees.map((e) => (e.id === employee.id ? employee : e))
+          : [...prev.employees, employee],
+      };
+    });
+  }, []);
+
+  /** حذف کارمند، همراه با برداشتن نامش از کارهایی که به او سپرده شده بود */
+  const removeEmployee = useCallback((employeeId: string) => {
+    setData((prev) => {
+      const days: Record<string, DayRecord> = {};
+      for (const [key, day] of Object.entries(prev.days)) {
+        days[key] = {
+          ...day,
+          tasks: day.tasks.map((t) =>
+            t.assignee === employeeId ? { ...t, assignee: undefined } : t,
+          ),
+        };
+      }
+      const attendance: PlannerData['attendance'] = {};
+      for (const [key, byEmployee] of Object.entries(prev.attendance)) {
+        const { [employeeId]: _removed, ...rest } = byEmployee;
+        attendance[key] = rest;
+      }
+      return {
+        ...prev,
+        days,
+        attendance,
+        employees: prev.employees.filter((e) => e.id !== employeeId),
+      };
+    });
+  }, []);
+
+  const setAttendance = useCallback(
+    (key: string, employeeId: string, patch: Partial<Attendance>) => {
+      setData((prev) => {
+        const day = prev.attendance[key] ?? {};
+        const current = day[employeeId] ?? emptyAttendance();
+        return {
+          ...prev,
+          attendance: {
+            ...prev.attendance,
+            [key]: { ...day, [employeeId]: { ...current, ...patch } },
+          },
+        };
+      });
+    },
+    [],
+  );
+
   const addEntry = useCallback((entry: Omit<FinanceEntry, 'id'>) => {
     setData((prev) => ({
       ...prev,
@@ -227,6 +301,10 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       saveTemplate,
       removeTemplate,
       setMonthNote,
+      assignTask,
+      saveEmployee,
+      removeEmployee,
+      setAttendance,
       addEntry,
       removeEntry,
       updateSettings,
@@ -247,6 +325,10 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       saveTemplate,
       removeTemplate,
       setMonthNote,
+      assignTask,
+      saveEmployee,
+      removeEmployee,
+      setAttendance,
       addEntry,
       removeEntry,
       updateSettings,

@@ -1171,6 +1171,94 @@ main {
   background: rgba(255, 255, 255, 0.6);
 }
 
+/* ------------------------------- کارکنان -------------------------------- */
+
+.dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-inline-end: 0.4rem;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.input-time {
+  max-width: 84px;
+  text-align: center;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.input-inline {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.85rem;
+  min-width: 110px;
+  background: transparent;
+  border-color: transparent;
+}
+
+.input-inline:hover {
+  border-color: var(--line);
+  background: var(--bg);
+}
+
+.attendance-table td,
+.attendance-table th {
+  white-space: nowrap;
+}
+
+.name-cell {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.assignee-select {
+  border: 1px solid var(--line);
+  background: var(--bg);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.3rem;
+  max-width: 110px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.shift-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.shift-list li {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.shift-name {
+  font-size: 0.86rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shift-hours {
+  font-size: 0.76rem;
+  color: var(--muted);
+  min-width: 92px;
+  text-align: end;
+}
+
 .cat-row {
   margin-bottom: 0.7rem;
 }

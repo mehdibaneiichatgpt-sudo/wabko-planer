@@ -3,16 +3,18 @@ import { DailyDashboard } from './pages/DailyDashboard.js';
 import { FinanceTracker } from './pages/FinanceTracker.js';
 import { HabitTracker } from './pages/HabitTracker.js';
 import { SettingsPage } from './pages/SettingsPage.js';
+import { StaffPage } from './pages/StaffPage.js';
 import { WeeklyPlanner } from './pages/WeeklyPlanner.js';
 import { formatWithWeekday } from './lib/jalali.js';
 import { PlannerProvider, usePlanner } from './state/PlannerContext.js';
 
-type Tab = 'daily' | 'weekly' | 'habits' | 'finance' | 'settings';
+type Tab = 'daily' | 'weekly' | 'habits' | 'staff' | 'finance' | 'settings';
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'daily', label: 'داشبورد روزانه', icon: '📅' },
   { id: 'weekly', label: 'پلنر هفتگی', icon: '🗓️' },
   { id: 'habits', label: 'ردیاب عادت', icon: '🔥' },
+  { id: 'staff', label: 'کارکنان', icon: '👥' },
   { id: 'finance', label: 'فروش و هزینه', icon: '💰' },
   { id: 'settings', label: 'تنظیمات', icon: '⚙️' },
 ];
@@ -54,6 +56,7 @@ function Shell() {
         {tab === 'daily' && <DailyDashboard />}
         {tab === 'weekly' && <WeeklyPlanner />}
         {tab === 'habits' && <HabitTracker />}
+        {tab === 'staff' && <StaffPage />}
         {tab === 'finance' && <FinanceTracker />}
         {tab === 'settings' && <SettingsPage />}
       </main>

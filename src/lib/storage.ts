@@ -22,6 +22,8 @@ function migrate(raw: unknown): PlannerData {
     weeklyLog: input.weeklyLog ?? {},
     monthlyLog: input.monthlyLog ?? {},
     monthNotes: input.monthNotes ?? {},
+    employees: input.employees ?? [],
+    attendance: input.attendance ?? {},
     finance: input.finance ?? [],
   };
 }

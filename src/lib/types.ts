@@ -22,6 +22,26 @@ export interface Task {
   done: boolean;
   /** اگر از روی قالب ساخته شده باشد */
   templateId?: string;
+  /** شناسهٔ کارمندی که کار به او سپرده شده */
+  assignee?: string;
+}
+
+export interface Employee {
+  id: string;
+  name: string;
+  role: string;
+  phone: string;
+  color: string;
+  active: boolean;
+}
+
+/** ساعت‌های یک کارمند در یک روز، به شکل «HH:MM» */
+export interface Attendance {
+  in: string;
+  lunchOut: string;
+  lunchIn: string;
+  out: string;
+  note: string;
 }
 
 export interface DayRecord {
@@ -76,6 +96,9 @@ export interface PlannerData {
   monthlyLog: Record<string, Record<string, boolean>>;
   /** یادداشت آزاد هر ماه: شناسهٔ ماه → متن */
   monthNotes: Record<string, string>;
+  employees: Employee[];
+  /** حضور و غیاب: کلید تاریخ → شناسهٔ کارمند → ساعت‌ها */
+  attendance: Record<string, Record<string, Attendance>>;
   finance: FinanceEntry[];
 }
 
