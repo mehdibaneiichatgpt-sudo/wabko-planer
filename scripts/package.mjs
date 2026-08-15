@@ -24,32 +24,56 @@ cpSync('server', join(OUT, 'server'), { recursive: true });
 // سرور به فایل‌های ساخته‌شده نیاز دارد، نه به Service Worker
 rmSync(join(OUT, 'app', 'sw.js'), { force: true });
 
+
+/** ویندوز پایان خط CRLF می‌خواهد */
+const crlf = (text) => text.replace(/\r?\n/g, '\r\n');
+
 /* ------------------------- فایل اجرای ویندوز ------------------------- */
 
+// فایل bat باید کاملاً ASCII باشد: cmd محتوای فارسی را به‌جای متن، دستور
+// می‌خواند و اسکریپت از هم می‌پاشد. توضیح فارسی در راهنما.txt است.
+// ضمناً Node گاهی نصب هست ولی در PATH نیست، پس مسیرهای استاندارد هم چک می‌شوند.
 const bat = `@echo off
 chcp 65001 >nul
-title پلنر روزانه وانکو
+title Wabko Planner
 cd /d "%~dp0"
 
-where node >nul 2>nul
-if errorlevel 1 (
-  echo.
-  echo   Node.js روی این کامپیوتر نصب نیست.
-  echo.
-  echo   یک بار از این آدرس نسخه LTS را نصب کن و دوباره همین فایل را اجرا کن:
-  echo   https://nodejs.org/fa/download
-  echo.
-  pause
-  exit /b 1
-)
+set "NODE_EXE="
+where node >nul 2>nul && set "NODE_EXE=node"
+if not defined NODE_EXE if exist "%ProgramFiles%\\nodejs\\node.exe" set "NODE_EXE=%ProgramFiles%\\nodejs\\node.exe"
+if not defined NODE_EXE if exist "%ProgramFiles(x86)%\\nodejs\\node.exe" set "NODE_EXE=%ProgramFiles(x86)%\\nodejs\\node.exe"
+if not defined NODE_EXE if exist "%LOCALAPPDATA%\\Programs\\nodejs\\node.exe" set "NODE_EXE=%LOCALAPPDATA%\\Programs\\nodejs\\node.exe"
+if not defined NODE_EXE if exist "%APPDATA%\\npm\\node.exe" set "NODE_EXE=%APPDATA%\\npm\\node.exe"
 
-node server\\server.mjs
+if not defined NODE_EXE goto no_node
+
+"%NODE_EXE%" server\\server.mjs
 echo.
-echo   برنامه بسته شد.
+echo   Closed. / barnameh baste shod.
 pause
+exit /b 0
+
+:no_node
+echo.
+echo   ============================================
+echo    Node.js was not found on this computer.
+echo   ============================================
+echo.
+echo    1. Install the LTS version from:
+echo         https://nodejs.org
+echo.
+echo    2. If Node.js is already installed, run its
+echo       installer again and choose "Repair",
+echo       then restart Windows.
+echo.
+echo    3. Run this file again.
+echo.
+pause
+exit /b 1
 `;
 
-writeFileSync(join(OUT, 'اجرای پلنر.bat'), '\ufeff' + bat, 'utf8');
+// بدون BOM و بدون UTF-8: با BOM، دستور اول (@echo off) شناخته نمی‌شود
+writeFileSync(join(OUT, 'اجرای پلنر.bat'), crlf(bat), 'ascii');
 
 /* ------------------------- اجرا روی مک و لینوکس ---------------------- */
 
@@ -81,6 +105,12 @@ const readme = `پلنر روزانه وانکو
 اگر پیام داد Node.js نصب نیست، یک بار از nodejs.org نسخه LTS را نصب کن.
 این کار فقط یک بار لازم است.
 
+اگر پیام داد Node.js پیدا نشد
+------------------------------
+یعنی نصب نیست، یا نصب هست ولی ویندوز مسیرش را نمی‌شناسد.
+اگر قبلا نصبش کرده‌ای: نصب‌کننده Node.js را دوباره باز کن، دکمه Repair را
+بزن، بعد ویندوز را ری‌استارت کن و دوباره «اجرای پلنر» را بزن.
+
 آدرس برنامه
 -----------
 http://127.0.0.1:7373
@@ -108,6 +138,6 @@ backups\\             نسخه پشتیبان خودکار، روزی یک با�
 لازم نیست. همه چیز روی همین کامپیوتر اجرا می‌شود.
 `;
 
-writeFileSync(join(OUT, 'راهنما.txt'), '\ufeff' + readme, 'utf8');
+writeFileSync(join(OUT, 'راهنما.txt'), '\ufeff' + crlf(readme), 'utf8');
 
 console.log(`✓ بسته در ${OUT} آماده شد`);
