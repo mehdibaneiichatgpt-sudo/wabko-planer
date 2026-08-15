@@ -48,7 +48,7 @@ if not defined NODE_EXE if exist "%LOCALAPPDATA%\\Programs\\nodejs\\node.exe" se
 
 if not defined NODE_EXE goto no_node
 
-start "Wabko Planner" /min "%~dp0server\\run.bat" "%NODE_EXE%"
+start "Wabko Planner" /min "%~dp0server\\run.bat"
 exit /b 0
 
 :no_node
@@ -76,7 +76,8 @@ const runBat = `@echo off
 chcp 65001 >nul
 title Wabko Planner
 cd /d "%~dp0.."
-"%~1" server\\server.mjs
+if not defined NODE_EXE set "NODE_EXE=node"
+"%NODE_EXE%" server\\server.mjs
 if errorlevel 1 (
   echo.
   echo   The app stopped with an error. Read the message above.
