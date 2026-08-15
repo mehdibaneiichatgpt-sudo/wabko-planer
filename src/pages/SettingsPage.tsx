@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import { TimeInput } from '../components/TimeInput.js';
-import { makeId } from '../lib/defaults.js';
 import { WEEKDAYS, fa } from '../lib/jalali.js';
-import { clearData, exportData, importData } from '../lib/storage.js';
+import { clearBrowserData, exportData, importData } from '../lib/storage.js';
+import { defaultData, makeId } from '../lib/defaults.js';
 import { isOvernightShop } from '../lib/time.js';
 import {
   CATEGORY_LABELS,
@@ -14,7 +14,8 @@ import {
 import { usePlanner } from '../state/PlannerContext.js';
 
 export function SettingsPage() {
-  const { data, replaceData, saveTemplate, removeTemplate, updateSettings } = usePlanner();
+  const { data, storage, replaceData, saveTemplate, removeTemplate, updateSettings } =
+    usePlanner();
   const fileInput = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState<TaskCategory>('open');
@@ -124,10 +125,19 @@ export function SettingsPage() {
 
         <div className="card">
           <h2 className="card-title">پشتیبان‌گیری</h2>
-          <p className="muted">
-            همهٔ اطلاعات فقط روی همین دستگاه و داخل مرورگر ذخیره می‌شود. برای انتقال به دستگاه
-            دیگر یا نگهداری نسخهٔ امن، فایل پشتیبان بگیر.
-          </p>
+          {storage.backend === 'file' ? (
+            <p className="muted">
+              اطلاعات با هر تغییر در فایل <code>{storage.file}</code> ذخیره می‌شود. پاک کردن
+              اطلاعات مرورگر یا عوض کردن مرورگر هیچ اثری روی آن ندارد. یک نسخهٔ پشتیبان روزانه
+              هم خودکار در پوشهٔ <code>backups</code> نگه داشته می‌شود.
+            </p>
+          ) : (
+            <p className="muted">
+              این نسخه بدون سرور محلی باز شده، پس اطلاعات فقط داخل حافظهٔ همین مرورگر است و با
+              پاک کردن اطلاعات مرورگر از بین می‌رود. برای ذخیرهٔ مطمئن، برنامه را از طریق فایل
+              اجرای ویندوز باز کن.
+            </p>
+          )}
           <div className="btn-row">
             <button
               type="button"
@@ -155,8 +165,17 @@ export function SettingsPage() {
             type="button"
             className="danger-btn"
             onClick={() => {
-              if (window.confirm('همهٔ اطلاعات پاک شود؟ این کار برگشت‌پذیر نیست.')) {
-                clearData();
+              const where =
+                storage.backend === 'file'
+                  ? `فایل ${storage.file} خالی می‌شود`
+                  : 'حافظهٔ این مرورگر خالی می‌شود';
+              if (!window.confirm(`همهٔ اطلاعات پاک شود؟ ${where}.`)) return;
+
+              if (storage.backend === 'file') {
+                // روی فایل، پاک کردن یعنی نوشتن دادهٔ خالی؛ پشتیبان دیروز سرِ جایش می‌ماند
+                replaceData(defaultData());
+              } else {
+                clearBrowserData();
                 window.location.reload();
               }
             }}

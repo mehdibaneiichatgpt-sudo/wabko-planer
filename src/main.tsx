@@ -14,3 +14,19 @@ createRoot(container).render(
     <App />
   </StrictMode>,
 );
+
+// در حالت توسعه ثبت نمی‌شود تا تغییرها بدون دردسر حافظه دیده شوند.
+// روی file:// هم اصلاً معنی ندارد، چون آنجا فایل از قبل روی دستگاه است.
+const canUseServiceWorker =
+  import.meta.env.PROD &&
+  'serviceWorker' in navigator &&
+  (location.protocol === 'https:' || location.hostname === 'localhost');
+
+if (canUseServiceWorker) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch((error) => {
+      // نبود پشتیبانی آفلاین نباید جلوی اجرای برنامه را بگیرد
+      console.warn('ثبت Service Worker ناموفق بود:', error);
+    });
+  });
+}

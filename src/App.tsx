@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DailyDashboard } from './pages/DailyDashboard.js';
 import { FinanceTracker } from './pages/FinanceTracker.js';
 import { HabitTracker } from './pages/HabitTracker.js';
@@ -6,6 +6,8 @@ import { SettingsPage } from './pages/SettingsPage.js';
 import { StaffPage } from './pages/StaffPage.js';
 import { WeeklyPlanner } from './pages/WeeklyPlanner.js';
 import { formatWithWeekday } from './lib/jalali.js';
+import { initStorage } from './lib/storage.js';
+import type { PlannerData } from './lib/types.js';
 import { PlannerProvider, usePlanner } from './state/PlannerContext.js';
 
 type Tab = 'daily' | 'weekly' | 'habits' | 'staff' | 'finance' | 'settings';
@@ -19,9 +21,59 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'settings', label: 'تنظیمات', icon: '⚙️' },
 ];
 
+/** وضعیت اتصال، فقط برای اطلاع کاربر — کار برنامه به آن وابسته نیست */
+function useOnline(): boolean {
+  const [online, setOnline] = useState(() =>
+    typeof navigator === 'undefined' ? true : navigator.onLine,
+  );
+
+  useEffect(() => {
+    const goOnline = () => setOnline(true);
+    const goOffline = () => setOnline(false);
+    window.addEventListener('online', goOnline);
+    window.addEventListener('offline', goOffline);
+    return () => {
+      window.removeEventListener('online', goOnline);
+      window.removeEventListener('offline', goOffline);
+    };
+  }, []);
+
+  return online;
+}
+
+function SaveIndicator() {
+  const { saveState, saveError, storage } = usePlanner();
+
+  if (saveState === 'error') {
+    return (
+      <span className="save-chip save-error" title={saveError ?? undefined}>
+        ذخیره نشد
+      </span>
+    );
+  }
+
+  if (saveState === 'saving') {
+    return <span className="save-chip save-busy">در حال ذخیره…</span>;
+  }
+
+  return (
+    <span
+      className="save-chip save-ok"
+      title={
+        storage.backend === 'file'
+          ? `همه‌چیز در فایل ${storage.file ?? 'data.json'} ذخیره شده است`
+          : 'در حافظهٔ همین مرورگر ذخیره شده است'
+      }
+    >
+      ذخیره شد
+    </span>
+  );
+}
+
 function Shell() {
   const [tab, setTab] = useState<Tab>('daily');
-  const { data, today } = usePlanner();
+  const { data, today, storage } = usePlanner();
+  const online = useOnline();
 
   return (
     <div className="app">
@@ -35,7 +87,15 @@ function Shell() {
             <small>پلنر روزانهٔ فروشگاه</small>
           </div>
         </div>
-        <span className="today-chip">امروز: {formatWithWeekday(today)}</span>
+        <div className="topbar-side">
+          <SaveIndicator />
+          {!online && (
+            <span className="offline-chip" title="برنامه بدون اینترنت هم کار می‌کند">
+              آفلاین
+            </span>
+          )}
+          <span className="today-chip">امروز: {formatWithWeekday(today)}</span>
+        </div>
       </header>
 
       <nav className="tabs">
@@ -62,15 +122,55 @@ function Shell() {
       </main>
 
       <footer className="footer">
-        اطلاعات روی همین دستگاه ذخیره می‌شود — برای نسخهٔ پشتیبان به تنظیمات برو.
+        {storage.backend === 'file'
+          ? `اطلاعات با هر تغییر در فایل ${storage.file ?? 'data.json'} ذخیره می‌شود.`
+          : 'اطلاعات در حافظهٔ همین مرورگر ذخیره می‌شود — برای نسخهٔ پشتیبان به تنظیمات برو.'}
       </footer>
     </div>
   );
 }
 
 export default function App() {
+  const [data, setData] = useState<PlannerData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    initStorage()
+      .then(setData)
+      .catch((e: Error) => setError(e.message));
+  }, []);
+
+  if (error) {
+    return (
+      <div className="app boot">
+        <div className="card boot-card">
+          <h1>اطلاعات خوانده نشد</h1>
+          <p className="muted">{error}</p>
+          <p className="muted">
+            برای اینکه داده‌ای از دست نرود، برنامه بدون اطلاعات بالا نمی‌آید. پنجرهٔ سرور را
+            ببند و دوباره اجرا کن؛ اگر باز هم تکرار شد، فایل <code>data.json</code> و پوشهٔ
+            <code>backups</code> را نگه دار.
+          </p>
+          <button type="button" className="primary-btn" onClick={() => window.location.reload()}>
+            تلاش دوباره
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="app boot">
+        <div className="card boot-card">
+          <p className="muted">در حال بارگذاری اطلاعات…</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <PlannerProvider>
+    <PlannerProvider data={data}>
       <Shell />
     </PlannerProvider>
   );

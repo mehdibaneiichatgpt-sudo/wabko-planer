@@ -133,6 +133,63 @@ p {
   font-size: 0.78rem;
 }
 
+.topbar-side {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.save-chip {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.save-ok {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.save-busy {
+  background: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+.save-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.boot {
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+}
+
+.boot-card {
+  max-width: 520px;
+  text-align: center;
+}
+
+.boot-card code {
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 0.05rem 0.35rem;
+  margin: 0 0.15rem;
+}
+
+.offline-chip {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .today-chip {
   background: rgba(255, 255, 255, 0.15);
   padding: 0.35rem 0.8rem;
@@ -1394,7 +1451,64 @@ main {
     padding: 0.7rem 0.9rem;
   }
 
-  .today-chip {
+  .topbar-side {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.save-chip {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.save-ok {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.save-busy {
+  background: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+.save-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.boot {
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+}
+
+.boot-card {
+  max-width: 520px;
+  text-align: center;
+}
+
+.boot-card code {
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 0.05rem 0.35rem;
+  margin: 0 0.15rem;
+}
+
+.offline-chip {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.today-chip {
     font-size: 0.75rem;
   }
 }

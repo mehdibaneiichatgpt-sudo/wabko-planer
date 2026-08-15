@@ -4,13 +4,14 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
 import { makeId } from '../lib/defaults.js';
 import { emptyDay, getDay, tasksFromTemplates } from '../lib/day.js';
 import { monthId, todayKey, weekId } from '../lib/jalali.js';
-import { loadData, saveData } from '../lib/storage.js';
+import { saveData, storageInfo, type StorageInfo } from '../lib/storage.js';
 import { emptyAttendance } from '../lib/time.js';
 import type {
   Attendance,
@@ -25,10 +26,16 @@ import type {
   TaskTemplate,
 } from '../lib/types.js';
 
+/** وضعیت ذخیره‌سازی، برای اینکه کاربر ببیند تغییرش ثبت شده یا نه */
+export type SaveState = 'saved' | 'saving' | 'error';
+
 interface PlannerContextValue {
   data: PlannerData;
   selected: string;
   today: string;
+  saveState: SaveState;
+  saveError: string | null;
+  storage: StorageInfo;
   setSelected: (key: string) => void;
   replaceData: (data: PlannerData) => void;
 
@@ -60,14 +67,54 @@ interface PlannerContextValue {
 
 const PlannerContext = createContext<PlannerContextValue | null>(null);
 
-export function PlannerProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<PlannerData>(() => loadData());
+export function PlannerProvider({
+  data: initialData,
+  children,
+}: {
+  data: PlannerData;
+  children: ReactNode;
+}) {
+  const [data, setData] = useState<PlannerData>(initialData);
   const [today, setToday] = useState(() => todayKey());
   const [selected, setSelected] = useState(today);
+  const [saveState, setSaveState] = useState<SaveState>('saved');
+  const [saveError, setSaveError] = useState<string | null>(null);
 
+  /**
+   * ذخیرهٔ خودکار با تأخیر کوتاه: در حین تایپ صدها بار روی دیسک نمی‌نویسد،
+   * ولی نیم‌ثانیه بعد از آخرین تغییر، همه‌چیز ثبت شده است.
+   */
+  const firstRender = useRef(true);
   useEffect(() => {
-    saveData(data);
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    setSaveState('saving');
+    const timer = window.setTimeout(() => {
+      saveData(data)
+        .then(() => {
+          setSaveState('saved');
+          setSaveError(null);
+        })
+        .catch((error: Error) => {
+          setSaveState('error');
+          setSaveError(error.message);
+          console.error('ذخیره ناموفق بود:', error);
+        });
+    }, 500);
+
+    return () => window.clearTimeout(timer);
   }, [data]);
+
+  // هشدار هنگام بستن پنجره اگر آخرین تغییر هنوز ثبت نشده باشد
+  useEffect(() => {
+    if (saveState === 'saved') return;
+    const warn = (event: BeforeUnloadEvent) => event.preventDefault();
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [saveState]);
 
   // اگر اپ از نیمه‌شب رد شد، «امروز» باید خودش جلو برود
   useEffect(() => {
@@ -288,6 +335,9 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       data,
       selected,
       today,
+      saveState,
+      saveError,
+      storage: storageInfo(),
       setSelected,
       replaceData,
       updateDay,
@@ -313,6 +363,8 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       data,
       selected,
       today,
+      saveState,
+      saveError,
       replaceData,
       updateDay,
       toggleTask,

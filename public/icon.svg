@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="112" fill="#17603f" />
+  <!-- سایبان فروشگاه -->
+  <path
+    d="M104 150h304l26 74H78z"
+    fill="#ffffff"
+    opacity="0.92"
+  />
+  <path
+    d="M78 224h356v18a34 34 0 0 1-34 34 34 34 0 0 1-34-34 34 34 0 0 1-34 34 34 34 0 0 1-34-34 34 34 0 0 1-34 34 34 34 0 0 1-34-34 34 34 0 0 1-34 34 34 34 0 0 1-34-34 34 34 0 0 1-34 34 34 34 0 0 1-34-34z"
+    fill="#a9d9c2"
+  />
+  <!-- بدنهٔ فروشگاه -->
+  <path d="M112 286h288v112H112z" fill="#ffffff" opacity="0.92" />
+  <!-- در ورودی -->
+  <rect x="292" y="316" width="76" height="82" rx="8" fill="#17603f" />
+  <circle cx="306" cy="358" r="6" fill="#a9d9c2" />
+  <!-- ویترین -->
+  <rect x="144" y="316" width="112" height="60" rx="8" fill="#17603f" />
+  <!-- کف -->
+  <rect x="92" y="398" width="328" height="22" rx="11" fill="#ffffff" opacity="0.92" />
+</svg>
