@@ -50,7 +50,6 @@ pause
 `;
 
 writeFileSync(join(OUT, 'اجرای پلنر.bat'), '\ufeff' + bat, 'utf8');
-writeFileSync(join(OUT, 'start.bat'), '\ufeff' + bat, 'utf8');
 
 /* ------------------------- اجرا روی مک و لینوکس ---------------------- */
 
@@ -63,7 +62,9 @@ fi
 node server/server.mjs
 `;
 
-writeFileSync(join(OUT, 'start.command'), sh, { mode: 0o755 });
+if (process.env.INCLUDE_UNIX_LAUNCHER === '1') {
+  writeFileSync(join(OUT, 'start.command'), sh, { mode: 0o755 });
+}
 
 /* --------------------------------- راهنما --------------------------- */
 
