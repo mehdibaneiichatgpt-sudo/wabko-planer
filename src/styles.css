@@ -1209,6 +1209,20 @@ main {
   white-space: nowrap;
 }
 
+.clock {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.average-row .stat {
+  text-align: center;
+}
+
+.highlight-stat {
+  background: var(--brand-tint);
+  outline: 1px solid var(--brand-soft);
+}
+
 .name-cell {
   display: flex;
   align-items: center;

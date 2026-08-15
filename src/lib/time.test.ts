@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
 import {
+  anchoredTime,
+  averageOf,
+  averageTime,
+  formatClock,
   formatDuration,
   formatTime,
   isPresent,
@@ -94,6 +98,38 @@ check('حاضر بودن با ثبت ساعت ورود مشخص می‌شود', 
 check('تبدیل به ساعت اعشاری', () => {
   assert.equal(toHours(510), 8.5);
   assert.equal(toHours(0), 0);
+});
+
+check('لنگر انداختن ساعت‌ها به ورود', () => {
+  const day = rec({ in: '09:00', lunchOut: '13:00', lunchIn: '13:45', out: '18:30' });
+  assert.equal(anchoredTime(day, 'in'), 9 * 60);
+  assert.equal(anchoredTime(day, 'lunchOut'), 13 * 60);
+  assert.equal(anchoredTime(day, 'out'), 18 * 60 + 30);
+
+  // شیفت شب: خروج ۰۱:۰۰ باید ۲۵:۰۰ حساب شود، نه ۰۱:۰۰
+  const night = rec({ in: '16:00', lunchOut: '23:30', lunchIn: '00:15', out: '01:00' });
+  assert.equal(anchoredTime(night, 'out'), 25 * 60);
+  assert.equal(anchoredTime(night, 'lunchIn'), 24 * 60 + 15);
+  assert.equal(anchoredTime(night, 'lunchOut'), 23 * 60 + 30);
+
+  assert.equal(anchoredTime(rec(), 'out'), null);
+  assert.equal(anchoredTime(undefined, 'in'), null);
+});
+
+check('میانگین ساعت', () => {
+  assert.equal(averageTime([]), null);
+  assert.equal(averageTime([9 * 60, 10 * 60]), 9 * 60 + 30);
+  assert.equal(formatClock(averageTime([9 * 60, 10 * 60])), '۰۹:۳۰');
+  assert.equal(formatClock(null), '—');
+
+  // میانگین خروج شیفت شب باید بعد از نیمه‌شب بیفتد، نه ظهر
+  const nights = [25 * 60, 24 * 60 + 30];
+  assert.equal(formatClock(averageTime(nights)), '۰۰:۴۵');
+});
+
+check('میانگین ساده', () => {
+  assert.equal(averageOf([]), 0);
+  assert.equal(averageOf([480, 510, 540]), 510);
 });
 
 console.log(`\n${passed} تست زمان با موفقیت اجرا شد.\n`);

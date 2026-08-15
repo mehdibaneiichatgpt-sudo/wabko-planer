@@ -5,12 +5,23 @@ import { TimeInput } from '../components/TimeInput.js';
 import { HABIT_COLORS, makeId } from '../lib/defaults.js';
 import { getDay } from '../lib/day.js';
 import { MONTHS, fa, formatShort, monthKeys, parseKey } from '../lib/jalali.js';
-import { formatDuration, isPresent, lunchMinutes, toHours, workedMinutes } from '../lib/time.js';
-import type { Attendance, Employee } from '../lib/types.js';
+import {
+  anchoredTime,
+  averageOf,
+  averageTime,
+  formatClock,
+  formatDuration,
+  isPresent,
+  lunchMinutes,
+  toHours,
+  workedMinutes,
+  type TimeField,
+} from '../lib/time.js';
+import type { Employee } from '../lib/types.js';
 import { usePlanner } from '../state/PlannerContext.js';
 
 /** ستون‌های ساعت‌زنی، به ترتیبی که در طول روز اتفاق می‌افتند */
-const TIME_FIELDS: { key: keyof Pick<Attendance, 'in' | 'lunchOut' | 'lunchIn' | 'out'>; label: string }[] = [
+const TIME_FIELDS: { key: TimeField; label: string }[] = [
   { key: 'in', label: 'ورود' },
   { key: 'lunchOut', label: 'رفتن به نهار' },
   { key: 'lunchIn', label: 'برگشت از نهار' },
@@ -31,30 +42,76 @@ export function StaffPage() {
   const dayAttendance = data.attendance[selected] ?? {};
   const monthDays = useMemo(() => monthKeys(view.jy, view.jm), [view.jy, view.jm]);
 
-  /** جمع‌بندی ماهانهٔ هر کارمند: روزهای حضور، کارکرد و میانگین */
+  /** جمع‌بندی ماهانهٔ هر کارمند: روزهای حضور، کارکرد و میانگین ساعت‌ها */
   const monthly = useMemo(
     () =>
       employees.map((employee) => {
+        const clocks: Record<TimeField, number[]> = { in: [], lunchOut: [], lunchIn: [], out: [] };
+        const worked: number[] = [];
+        const lunches: number[] = [];
         let minutes = 0;
         let days = 0;
-        let lunch = 0;
+
         for (const key of monthDays) {
           const record = data.attendance[key]?.[employee.id];
           if (!isPresent(record)) continue;
           days += 1;
-          minutes += workedMinutes(record);
-          lunch += lunchMinutes(record);
+
+          const shift = workedMinutes(record);
+          minutes += shift;
+          if (shift > 0) worked.push(shift);
+
+          const lunch = lunchMinutes(record);
+          if (lunch > 0) lunches.push(lunch);
+
+          for (const field of TIME_FIELDS) {
+            const value = anchoredTime(record, field.key);
+            if (value !== null) clocks[field.key].push(value);
+          }
         }
+
         return {
           employee,
           days,
           minutes,
-          lunch,
-          average: days === 0 ? 0 : Math.round(minutes / days),
+          clocks,
+          worked,
+          lunches,
+          average: averageOf(worked),
+          averageLunch: averageOf(lunches),
+          avgTimes: {
+            in: averageTime(clocks.in),
+            lunchOut: averageTime(clocks.lunchOut),
+            lunchIn: averageTime(clocks.lunchIn),
+            out: averageTime(clocks.out),
+          },
         };
       }),
     [data.attendance, employees, monthDays],
   );
+
+  /** همان میانگین‌ها، این بار برای کل فروشگاه */
+  const shopAverages = useMemo(() => {
+    const clocks: Record<TimeField, number[]> = { in: [], lunchOut: [], lunchIn: [], out: [] };
+    const worked: number[] = [];
+    const lunches: number[] = [];
+
+    for (const row of monthly) {
+      for (const field of TIME_FIELDS) clocks[field.key].push(...row.clocks[field.key]);
+      worked.push(...row.worked);
+      lunches.push(...row.lunches);
+    }
+
+    return {
+      in: averageTime(clocks.in),
+      lunchOut: averageTime(clocks.lunchOut),
+      lunchIn: averageTime(clocks.lunchIn),
+      out: averageTime(clocks.out),
+      worked: averageOf(worked),
+      lunch: averageOf(lunches),
+      days: worked.length,
+    };
+  }, [monthly]);
 
   /** کارهای امروز که به هر کارمند سپرده شده */
   const assignedToday = useMemo(() => {
@@ -153,6 +210,43 @@ export function StaffPage() {
             </div>
           </section>
 
+          <section className="card">
+            <div className="card-head">
+              <h2 className="card-title">
+                میانگین‌های فروشگاه در {MONTHS[view.jm - 1]} {fa(view.jy)}
+              </h2>
+              <span className="group-count">
+                از {fa(shopAverages.days)} شیفت ثبت‌شده
+              </span>
+            </div>
+            <div className="stat-row average-row">
+              <div className="stat">
+                <span className="stat-label">میانگین اومدن سر کار</span>
+                <strong className="clock">{formatClock(shopAverages.in)}</strong>
+              </div>
+              <div className="stat">
+                <span className="stat-label">میانگین رفتن به نهار</span>
+                <strong className="clock">{formatClock(shopAverages.lunchOut)}</strong>
+              </div>
+              <div className="stat">
+                <span className="stat-label">میانگین برگشت از نهار</span>
+                <strong className="clock">{formatClock(shopAverages.lunchIn)}</strong>
+              </div>
+              <div className="stat">
+                <span className="stat-label">میانگین خروج</span>
+                <strong className="clock">{formatClock(shopAverages.out)}</strong>
+              </div>
+              <div className="stat">
+                <span className="stat-label">میانگین مدت نهار</span>
+                <strong>{formatDuration(shopAverages.lunch)}</strong>
+              </div>
+              <div className="stat highlight-stat">
+                <span className="stat-label">میانگین ساعت کار</span>
+                <strong className="pos">{formatDuration(shopAverages.worked)}</strong>
+              </div>
+            </div>
+          </section>
+
           <section className="card scroll-card">
             <div className="card-head">
               <h2 className="card-title">حضور و غیاب {formatShort(selected)}</h2>
@@ -240,13 +334,18 @@ export function StaffPage() {
                 </div>
               </div>
               <div className="streak-table-wrap">
-                <table className="entry-table">
+                <table className="entry-table attendance-table">
                   <thead>
                     <tr>
                       <th>کارمند</th>
                       <th>روزهای حضور</th>
+                      <th>میانگین ورود</th>
+                      <th>میانگین رفتن به نهار</th>
+                      <th>میانگین برگشت</th>
+                      <th>میانگین خروج</th>
+                      <th>میانگین نهار</th>
+                      <th>میانگین کار روزانه</th>
                       <th>کارکرد ماه</th>
-                      <th>میانگین روزانه</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -257,12 +356,32 @@ export function StaffPage() {
                           {row.employee.name}
                         </th>
                         <td>{fa(row.days)}</td>
+                        <td className="clock">{formatClock(row.avgTimes.in)}</td>
+                        <td className="clock">{formatClock(row.avgTimes.lunchOut)}</td>
+                        <td className="clock">{formatClock(row.avgTimes.lunchIn)}</td>
+                        <td className="clock">{formatClock(row.avgTimes.out)}</td>
+                        <td className="muted">{formatDuration(row.averageLunch)}</td>
+                        <td className="muted">{formatDuration(row.average)}</td>
                         <td className={row.minutes > 0 ? 'pos' : undefined}>
                           {fa(toHours(row.minutes))} ساعت
                         </td>
-                        <td className="muted">{formatDuration(row.average)}</td>
                       </tr>
                     ))}
+                    {monthly.length > 1 && (
+                      <tr className="summary-row">
+                        <th>میانگین فروشگاه</th>
+                        <td>{fa(shopAverages.days)}</td>
+                        <td className="clock">{formatClock(shopAverages.in)}</td>
+                        <td className="clock">{formatClock(shopAverages.lunchOut)}</td>
+                        <td className="clock">{formatClock(shopAverages.lunchIn)}</td>
+                        <td className="clock">{formatClock(shopAverages.out)}</td>
+                        <td>{formatDuration(shopAverages.lunch)}</td>
+                        <td>{formatDuration(shopAverages.worked)}</td>
+                        <td className="pos">
+                          {fa(toHours(monthly.reduce((s, r) => s + r.minutes, 0)))} ساعت
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

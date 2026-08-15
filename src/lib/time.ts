@@ -76,6 +76,43 @@ export function isPresent(record: Attendance | undefined): boolean {
   return Boolean(record && parseTime(record.in) !== null);
 }
 
+export type TimeField = 'in' | 'lunchOut' | 'lunchIn' | 'out';
+
+/**
+ * ساعت یک روز، «لنگرانداخته» به ساعت ورود.
+ * برای شیفتی که از نیمه‌شب رد می‌شود، خروجِ ۰۱:۰۰ به‌جای ۶۰ دقیقه،
+ * ۱۵۰۰ دقیقه (یعنی ۲۵:۰۰) برگردانده می‌شود تا میانگین‌گیری به هم نریزد.
+ */
+export function anchoredTime(
+  record: Attendance | undefined,
+  field: TimeField,
+): number | null {
+  if (!record) return null;
+  const value = parseTime(record[field]);
+  if (value === null) return null;
+  if (field === 'in') return value;
+  const start = parseTime(record.in);
+  if (start === null) return value;
+  return value >= start ? value : value + MINUTES_IN_DAY;
+}
+
+/** میانگین چند ساعت؛ خروجی همیشه در بازهٔ ۰۰:۰۰ تا ۲۳:۵۹ است */
+export function averageTime(values: number[]): number | null {
+  if (values.length === 0) return null;
+  const sum = values.reduce((total, value) => total + value, 0);
+  return Math.round(sum / values.length) % MINUTES_IN_DAY;
+}
+
+/** «۰۹:۱۵» یا خط تیره وقتی داده‌ای نیست */
+export function formatClock(minutes: number | null): string {
+  return minutes === null ? '—' : fa(formatTime(minutes));
+}
+
+export function averageOf(values: number[]): number {
+  if (values.length === 0) return 0;
+  return Math.round(values.reduce((total, value) => total + value, 0) / values.length);
+}
+
 export function emptyAttendance(): Attendance {
   return { in: '', lunchOut: '', lunchIn: '', out: '', note: '' };
 }
