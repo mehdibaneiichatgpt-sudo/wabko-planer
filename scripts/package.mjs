@@ -33,9 +33,11 @@ const crlf = (text) => text.replace(/\r?\n/g, '\r\n');
 // فایل bat باید کاملاً ASCII باشد: cmd محتوای فارسی را به‌جای متن، دستور
 // می‌خواند و اسکریپت از هم می‌پاشد. توضیح فارسی در راهنما.txt است.
 // ضمناً Node گاهی نصب هست ولی در PATH نیست، پس مسیرهای استاندارد هم چک می‌شوند.
+// سرور باید در حال اجرا بماند، ولی لازم نیست پنجره‌اش جلوی چشم باشد:
+// لانچر آن را مینیمایز اجرا می‌کند و خودش بلافاصله بسته می‌شود، درست مثل
+// یک میان‌بر معمولی. پنجرهٔ مینیمایز در نوار وظیفه می‌ماند تا هر وقت خواستی
+// ببندیش و برنامه متوقف شود.
 const bat = `@echo off
-chcp 65001 >nul
-title Wabko Planner
 cd /d "%~dp0"
 
 set "NODE_EXE="
@@ -43,14 +45,10 @@ where node >nul 2>nul && set "NODE_EXE=node"
 if not defined NODE_EXE if exist "%ProgramFiles%\\nodejs\\node.exe" set "NODE_EXE=%ProgramFiles%\\nodejs\\node.exe"
 if not defined NODE_EXE if exist "%ProgramFiles(x86)%\\nodejs\\node.exe" set "NODE_EXE=%ProgramFiles(x86)%\\nodejs\\node.exe"
 if not defined NODE_EXE if exist "%LOCALAPPDATA%\\Programs\\nodejs\\node.exe" set "NODE_EXE=%LOCALAPPDATA%\\Programs\\nodejs\\node.exe"
-if not defined NODE_EXE if exist "%APPDATA%\\npm\\node.exe" set "NODE_EXE=%APPDATA%\\npm\\node.exe"
 
 if not defined NODE_EXE goto no_node
 
-"%NODE_EXE%" server\\server.mjs
-echo.
-echo   Closed. / barnameh baste shod.
-pause
+start "Wabko Planner" /min "%~dp0server\\run.bat" "%NODE_EXE%"
 exit /b 0
 
 :no_node
@@ -63,7 +61,7 @@ echo    1. Install the LTS version from:
 echo         https://nodejs.org
 echo.
 echo    2. If Node.js is already installed, run its
-echo       installer again and choose "Repair",
+echo       installer again, choose "Repair",
 echo       then restart Windows.
 echo.
 echo    3. Run this file again.
@@ -72,8 +70,23 @@ pause
 exit /b 1
 `;
 
-// بدون BOM و بدون UTF-8: با BOM، دستور اول (@echo off) شناخته نمی‌شود
+// این یکی داخل پنجرهٔ مینیمایز اجرا می‌شود. اگر سرور با خطا بسته شد، pause
+// نگهش می‌دارد تا پیام خطا دیده شود؛ در حالت عادی پنجره تا پایان کار باز است.
+const runBat = `@echo off
+chcp 65001 >nul
+title Wabko Planner
+cd /d "%~dp0.."
+"%~1" server\\server.mjs
+if errorlevel 1 (
+  echo.
+  echo   The app stopped with an error. Read the message above.
+  echo.
+  pause
+)
+`;
+
 writeFileSync(join(OUT, 'اجرای پلنر.bat'), crlf(bat), 'ascii');
+writeFileSync(join(OUT, 'server', 'run.bat'), crlf(runBat), 'ascii');
 
 /* ------------------------- اجرا روی مک و لینوکس ---------------------- */
 
@@ -98,9 +111,15 @@ const readme = `پلنر روزانه وانکو
 اجرا
 ----
 روی فایل «اجرای پلنر.bat» دابل‌کلیک کن.
-یک پنجره سیاه باز می‌شود و مرورگر خودش برنامه را نشان می‌دهد.
+یک پنجره سیاه یک لحظه باز و بسته می‌شود، بعد مرورگر خودش برنامه را نشان می‌دهد.
 
-تا وقتی آن پنجره باز است برنامه کار می‌کند. برای بستن، پنجره را ببند.
+برنامه در پس زمینه اجرا می‌ماند: در نوار وظیفه (پایین صفحه) یک پنجره
+مینیمایز به اسم Wabko Planner می‌بینی.
+
+بستن برنامه
+-----------
+همان پنجره Wabko Planner را از نوار وظیفه باز کن و ببند.
+بستن مرورگر به تنهایی برنامه را متوقف نمی‌کند.
 
 اگر پیام داد Node.js نصب نیست، یک بار از nodejs.org نسخه LTS را نصب کن.
 این کار فقط یک بار لازم است.
