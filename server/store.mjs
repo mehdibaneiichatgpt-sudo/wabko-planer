@@ -28,7 +28,7 @@ export class DataStore {
       // فایل خراب را کنار می‌گذاریم تا با نوشتن بعدی پاک نشود
       const broken = `${this.file}.broken-${Date.now()}`;
       renameSync(this.file, broken);
-      console.error(`فایل داده خوانده نشد و به ${broken} منتقل شد:`, error.message);
+      console.error(`Data file could not be read; moved to ${broken}:`, error.message);
       return null;
     }
   }

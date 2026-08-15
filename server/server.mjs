@@ -74,7 +74,7 @@ function serveStatic(req, res, pathname) {
 
   const file = existsSync(target) && statSync(target).isFile() ? target : join(APP_DIR, 'index.html');
   if (!existsSync(file)) {
-    res.writeHead(404).end('برنامه پیدا نشد. مطمئن شو پوشهٔ app کنار server است.');
+    res.writeHead(404).end('App files not found. Make sure the "app" folder sits next to "server".');
     return;
   }
 
@@ -107,7 +107,7 @@ const server = createServer(async (req, res) => {
         store.write(parsed);
         json(res, 200, { ok: true, savedAt: new Date().toISOString() });
       } catch (error) {
-        console.error('ذخیره ناموفق بود:', error.message);
+        console.error('Save failed:', error.message);
         json(res, 400, { ok: false, error: error.message });
       }
       return;
@@ -127,15 +127,16 @@ const server = createServer(async (req, res) => {
 
 server.listen(PORT, HOST, () => {
   const url = `http://${HOST}:${PORT}/`;
+  // کنسول ویندوز متن راست‌به‌چپ را برعکس نشان می‌دهد، پس اینجا فقط لاتین
   console.log('');
-  console.log('  پلنر روزانهٔ فروشگاه');
-  console.log('  ─────────────────────────────────────────────');
-  console.log(`  آدرس:        ${url}`);
-  console.log(`  فایل داده:   ${store.file}`);
-  console.log(`  پشتیبان‌ها:   ${store.backupDir}`);
+  console.log('  WABKO PLANNER');
+  console.log('  ---------------------------------------------');
+  console.log(`  Open:       ${url}`);
+  console.log(`  Data file:  ${store.file}`);
+  console.log(`  Backups:    ${store.backupDir}`);
   console.log('');
-  console.log('  تا وقتی این پنجره باز است برنامه کار می‌کند.');
-  console.log('  برای بستن، این پنجره را ببند یا Ctrl+C بزن.');
+  console.log('  Keep this window open while you use the app.');
+  console.log('  Close the window (or press Ctrl+C) to stop.');
   console.log('');
 
   if (process.platform === 'win32') {
@@ -147,10 +148,10 @@ server.listen(PORT, HOST, () => {
 
 server.on('error', (error) => {
   if (error.code === 'EADDRINUSE') {
-    console.error(`\n  پورت ${PORT} مشغول است — احتمالاً برنامه از قبل باز است.`);
-    console.error(`  مرورگر را روی http://${HOST}:${PORT}/ باز کن.\n`);
+    console.error(`\n  Port ${PORT} is busy - the app is probably already running.`);
+    console.error(`  Just open http://${HOST}:${PORT}/ in your browser.\n`);
   } else {
-    console.error('\n  خطای سرور:', error.message, '\n');
+    console.error('\n  Server error:', error.message, '\n');
   }
   process.exit(1);
 });
