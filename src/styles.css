@@ -1313,6 +1313,52 @@ main {
   letter-spacing: 0.02em;
 }
 
+.person-averages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.person-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+  background: var(--bg);
+}
+
+.person-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.person-head strong {
+  font-size: 0.95rem;
+}
+
+.person-card .stat {
+  background: var(--card);
+}
+
+.shop-summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.86rem;
+}
+
+.shop-summary .stat-label {
+  display: inline;
+  font-weight: 700;
+  color: var(--text);
+}
+
 .average-row .stat {
   text-align: center;
 }

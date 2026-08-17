@@ -217,38 +217,86 @@ export function StaffPage() {
           <section className="card">
             <div className="card-head">
               <h2 className="card-title">
-                میانگین‌های فروشگاه در {MONTHS[view.jm - 1]} {fa(view.jy)}
+                میانگین هر نفر در {MONTHS[view.jm - 1]} {fa(view.jy)}
               </h2>
-              <span className="group-count">
-                از {fa(shopAverages.days)} شیفت ثبت‌شده
-              </span>
-            </div>
-            <div className="stat-row average-row">
-              <div className="stat">
-                <span className="stat-label">میانگین اومدن سر کار</span>
-                <strong className="clock">{formatClock(shopAverages.in)}</strong>
-              </div>
-              <div className="stat">
-                <span className="stat-label">میانگین رفتن به نهار</span>
-                <strong className="clock">{formatClock(shopAverages.lunchOut)}</strong>
-              </div>
-              <div className="stat">
-                <span className="stat-label">میانگین برگشت از نهار</span>
-                <strong className="clock">{formatClock(shopAverages.lunchIn)}</strong>
-              </div>
-              <div className="stat">
-                <span className="stat-label">میانگین خروج</span>
-                <strong className="clock">{formatClock(shopAverages.out)}</strong>
-              </div>
-              <div className="stat">
-                <span className="stat-label">میانگین مدت نهار</span>
-                <strong>{formatDuration(shopAverages.lunch)}</strong>
-              </div>
-              <div className="stat highlight-stat">
-                <span className="stat-label">میانگین ساعت کار</span>
-                <strong className="pos">{formatDuration(shopAverages.worked)}</strong>
+              <div className="datepicker-bar">
+                <button type="button" className="icon-btn" onClick={() => shiftMonth(-1)} aria-label="ماه قبل">
+                  ‹
+                </button>
+                <span className="date-display-main">
+                  {MONTHS[view.jm - 1]} {fa(view.jy)}
+                </span>
+                <button type="button" className="icon-btn" onClick={() => shiftMonth(1)} aria-label="ماه بعد">
+                  ›
+                </button>
               </div>
             </div>
+
+            <div className="person-averages">
+              {monthly
+                .filter((row) => row.employee.active)
+                .map((row) => (
+                  <div className="person-card" key={row.employee.id}>
+                    <div className="person-head">
+                      <span className="dot" style={{ background: row.employee.color }} />
+                      <strong>{row.employee.name}</strong>
+                      {row.employee.role && <span className="freq-chip">{row.employee.role}</span>}
+                      <span className="group-count">
+                        {fa(row.days)} روز حضور
+                      </span>
+                    </div>
+
+                    {row.days === 0 ? (
+                      <p className="muted">این ماه هنوز ساعتی برایش ثبت نشده.</p>
+                    ) : (
+                      <div className="stat-row average-row">
+                        <div className="stat">
+                          <span className="stat-label">میانگین اومدن سر کار</span>
+                          <strong className="clock">{formatClock(row.avgTimes.in)}</strong>
+                        </div>
+                        <div className="stat">
+                          <span className="stat-label">میانگین رفتن به نهار</span>
+                          <strong className="clock">{formatClock(row.avgTimes.lunchOut)}</strong>
+                        </div>
+                        <div className="stat">
+                          <span className="stat-label">میانگین برگشت از نهار</span>
+                          <strong className="clock">{formatClock(row.avgTimes.lunchIn)}</strong>
+                        </div>
+                        <div className="stat">
+                          <span className="stat-label">میانگین خروج</span>
+                          <strong className="clock">{formatClock(row.avgTimes.out)}</strong>
+                        </div>
+                        <div className="stat">
+                          <span className="stat-label">میانگین مدت نهار</span>
+                          <strong>{formatDuration(row.averageLunch)}</strong>
+                        </div>
+                        <div className="stat highlight-stat">
+                          <span className="stat-label">میانگین ساعت کار</span>
+                          <strong className="pos">{formatDuration(row.average)}</strong>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </div>
+
+            {/* میانگین مدت‌ها بین چند نفر معنی دارد، ولی میانگین ساعت‌های روز نه:
+                وقتی یکی ۱۰ صبح می‌آید و دیگری ۳ بعدازظهر، میانگینشان ساعتی است
+                که هیچ‌کدام سر کار نبوده‌اند. پس اینجا فقط مدت‌ها را جمع می‌بندیم. */}
+            {monthly.filter((row) => row.employee.active && row.days > 0).length > 1 && (
+              <div className="shop-summary">
+                <span className="stat-label">میانگین کل فروشگاه در این ماه</span>
+                <span>
+                  مدت نهار: <strong>{formatDuration(shopAverages.lunch)}</strong>
+                </span>
+                <span>
+                  ساعت کار روزانه: <strong className="pos">{formatDuration(shopAverages.worked)}</strong>
+                </span>
+                <span className="muted">
+                  از {fa(shopAverages.days)} شیفت ثبت‌شده
+                </span>
+              </div>
+            )}
           </section>
 
           <section className="card scroll-card">
@@ -360,32 +408,13 @@ export function StaffPage() {
 
           <section className="grid-two">
             <div className="card">
-              <div className="card-head">
-                <h2 className="card-title">گزارش ماهانه</h2>
-                <div className="datepicker-bar">
-                  <button type="button" className="icon-btn" onClick={() => shiftMonth(-1)} aria-label="ماه قبل">
-                    ‹
-                  </button>
-                  <span className="date-display-main">
-                    {MONTHS[view.jm - 1]} {fa(view.jy)}
-                  </span>
-                  <button type="button" className="icon-btn" onClick={() => shiftMonth(1)} aria-label="ماه بعد">
-                    ›
-                  </button>
-                </div>
-              </div>
+              <h2 className="card-title">مجموع کارکرد ماه</h2>
               <div className="streak-table-wrap">
-                <table className="entry-table attendance-table">
+                <table className="entry-table">
                   <thead>
                     <tr>
                       <th>کارمند</th>
                       <th>روزهای حضور</th>
-                      <th>میانگین ورود</th>
-                      <th>میانگین رفتن به نهار</th>
-                      <th>میانگین برگشت</th>
-                      <th>میانگین خروج</th>
-                      <th>میانگین نهار</th>
-                      <th>میانگین کار روزانه</th>
                       <th>کارکرد ماه</th>
                     </tr>
                   </thead>
@@ -397,12 +426,6 @@ export function StaffPage() {
                           {row.employee.name}
                         </th>
                         <td>{fa(row.days)}</td>
-                        <td className="clock">{formatClock(row.avgTimes.in)}</td>
-                        <td className="clock">{formatClock(row.avgTimes.lunchOut)}</td>
-                        <td className="clock">{formatClock(row.avgTimes.lunchIn)}</td>
-                        <td className="clock">{formatClock(row.avgTimes.out)}</td>
-                        <td className="muted">{formatDuration(row.averageLunch)}</td>
-                        <td className="muted">{formatDuration(row.average)}</td>
                         <td className={row.minutes > 0 ? 'pos' : undefined}>
                           {fa(toHours(row.minutes))} ساعت
                         </td>
@@ -410,14 +433,8 @@ export function StaffPage() {
                     ))}
                     {monthly.length > 1 && (
                       <tr className="summary-row">
-                        <th>میانگین فروشگاه</th>
-                        <td>{fa(shopAverages.days)}</td>
-                        <td className="clock">{formatClock(shopAverages.in)}</td>
-                        <td className="clock">{formatClock(shopAverages.lunchOut)}</td>
-                        <td className="clock">{formatClock(shopAverages.lunchIn)}</td>
-                        <td className="clock">{formatClock(shopAverages.out)}</td>
-                        <td>{formatDuration(shopAverages.lunch)}</td>
-                        <td>{formatDuration(shopAverages.worked)}</td>
+                        <th>جمع کل</th>
+                        <td>—</td>
                         <td className="pos">
                           {fa(toHours(monthly.reduce((s, r) => s + r.minutes, 0)))} ساعت
                         </td>
