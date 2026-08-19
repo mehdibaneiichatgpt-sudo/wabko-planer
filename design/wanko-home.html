@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-<title>صفحهٔ اول وانکو</title>
+<title>ترمینال اصالت وانکو</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
@@ -8,7 +8,7 @@
 />
 
 <style>
-  /* ---------------------------------------------------------------- tokens */
+  /* ================================================================ tokens */
   :root {
     --paper: #eff2ef;
     --panel: #ffffff;
@@ -20,81 +20,84 @@
     --line-2: #c2cec7;
     --accent: #14543a;
     --accent-2: #0c3a27;
-    --band: #14543a;
-    --band-ink: #e7f1ea;
-    --band-line: #2e6b4f;
-    --brass: #9c6b2c;
+
+    /* the machined panel: hero + footer share one ground */
+    --steel: #101815;
+    --steel-2: #18211d;
+    --steel-ink: #e9f0ec;
+    --steel-ink-2: #93a89e;
+    --steel-line: #283530;
+    --led: #5fd39c;
+
+    --brass: #a87534;
     --brass-ink: #74501f;
     --brass-soft: #e8dcc6;
+
     --plate-a: #e3e8e4;
-    --plate-b: #cfd8d2;
-    --plate-ink: #2b3a33;
-    --focus: #14543a;
+    --plate-b: #ccd6d0;
+    --plate-ink: #22302a;
+    --plate-line: #b3c0b9;
 
     --font-display: 'Noto Kufi Arabic', 'Vazirmatn', Tahoma, sans-serif;
     --font-body: 'Vazirmatn', Tahoma, system-ui, sans-serif;
-    --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+    --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
-    --step: clamp(56px, 8vw, 116px);
+    --step: clamp(58px, 8vw, 118px);
     --edge: 4px;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme='light']) {
-      --paper: #0a100d;
-      --panel: #101713;
-      --panel-2: #16201b;
+      --paper: #080d0b;
+      --panel: #0f1613;
+      --panel-2: #151d19;
       --ink: #e6ede8;
       --ink-2: #a3b3ab;
       --ink-3: #7b8b83;
-      --line: #223029;
-      --line-2: #2d3e35;
+      --line: #202b26;
+      --line-2: #2b3a33;
       --accent: #63cb9a;
       --accent-2: #8adcb5;
-      --band: #0e3325;
-      --band-ink: #d9ece1;
-      --band-line: #1c4a36;
+      --steel: #131b17;
+      --steel-2: #1a231f;
+      --steel-line: #2a3833;
       --brass: #d3a463;
-    --brass-ink: #f0cf9c;
+      --brass-ink: #f0cf9c;
       --brass-soft: #33291a;
-      --plate-a: #1b2621;
-      --plate-b: #131c17;
-      --plate-ink: #b9c9c1;
-      --focus: #63cb9a;
+      --plate-a: #232e29;
+      --plate-b: #18221e;
+      --plate-ink: #cbd9d2;
+      --plate-line: #35443d;
     }
   }
 
   :root[data-theme='dark'] {
-    --paper: #0a100d;
-    --panel: #101713;
-    --panel-2: #16201b;
+    --paper: #080d0b;
+    --panel: #0f1613;
+    --panel-2: #151d19;
     --ink: #e6ede8;
     --ink-2: #a3b3ab;
     --ink-3: #7b8b83;
-    --line: #223029;
-    --line-2: #2d3e35;
+    --line: #202b26;
+    --line-2: #2b3a33;
     --accent: #63cb9a;
     --accent-2: #8adcb5;
-    --band: #0e3325;
-    --band-ink: #d9ece1;
-    --band-line: #1c4a36;
+    --steel: #131b17;
+    --steel-2: #1a231f;
+    --steel-line: #2a3833;
     --brass: #d3a463;
     --brass-ink: #f0cf9c;
     --brass-soft: #33291a;
-    --plate-a: #1b2621;
-    --plate-b: #131c17;
-    --plate-ink: #b9c9c1;
-    --focus: #63cb9a;
+    --plate-a: #232e29;
+    --plate-b: #18221e;
+    --plate-ink: #cbd9d2;
+    --plate-line: #35443d;
   }
 
-  /* ----------------------------------------------------------------- base */
+  /* ================================================================== base */
   * { box-sizing: border-box; }
 
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-  }
+  body { margin: 0; background: var(--paper); color: var(--ink); }
 
   .page {
     direction: rtl;
@@ -110,140 +113,85 @@
   .page h1, .page h2, .page h3 {
     font-family: var(--font-display);
     font-weight: 700;
-    line-height: 1.35;
+    line-height: 1.34;
     margin: 0;
     text-wrap: balance;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.012em;
   }
 
   .page p { margin: 0; }
+  .page a { color: inherit; text-decoration: none; }
 
-  .page a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .page a:focus-visible,
-  .page button:focus-visible,
-  .page input:focus-visible {
-    outline: 2px solid var(--focus);
+  .page :is(a, button, input):focus-visible {
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
+    border-radius: 2px;
   }
 
-  .wrap {
-    width: min(1200px, 100% - 44px);
-    margin-inline: auto;
-  }
+  .wrap { width: min(1220px, 100% - 44px); margin-inline: auto; }
 
   .mono {
     font-family: var(--font-mono);
-    font-weight: 400;
     letter-spacing: 0.06em;
     direction: ltr;
     unicode-bidi: isolate;
   }
 
-  .label {
-    font-family: var(--font-display);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    color: var(--ink-3);
-    line-height: 1;
-  }
-
   .num { font-variant-numeric: tabular-nums; }
 
-  /* --------------------------------------------------------------- utility bar */
-  .util {
-    background: var(--band);
-    color: var(--band-ink);
-    font-size: 12.5px;
-  }
-
-  .util .wrap {
+  /* the section index line — a spec stamp, one per section */
+  .index {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    height: 38px;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ink-3);
+    margin-bottom: 18px;
   }
 
-  .util-links {
-    display: flex;
-    gap: 22px;
-    align-items: center;
+  .index::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
   }
 
-  .util a { opacity: 0.9; }
-  .util a:hover { opacity: 1; }
-
-  .util-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--brass);
-    display: inline-block;
-    margin-inline-end: 8px;
-    vertical-align: 2px;
-  }
-
-  /* --------------------------------------------------------------- header */
+  /* ================================================================ header */
   .head {
     position: sticky;
     top: 0;
-    z-index: 40;
-    background: var(--paper);
-    border-bottom: 1px solid var(--line);
+    z-index: 50;
+    border-bottom: 1px solid transparent;
+    transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+    color: var(--steel-ink);
   }
 
-  @supports (backdrop-filter: blur(8px)) {
-    .head {
-      background: color-mix(in srgb, var(--paper) 84%, transparent);
-      backdrop-filter: blur(12px) saturate(1.2);
-    }
+  .head .wrap { display: flex; align-items: center; gap: 28px; height: 74px; }
+
+  .head.stuck {
+    background: color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter: blur(14px) saturate(1.3);
+    border-bottom-color: var(--line);
+    color: var(--ink);
   }
 
-  .head .wrap {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-    height: 76px;
-  }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
 
-  .brand {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-  }
-
-  .brand-fa {
-    font-family: var(--font-display);
-    font-size: 25px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
+  .brand-fa { font-family: var(--font-display); font-size: 25px; font-weight: 700; letter-spacing: -0.02em; }
 
   .brand-en {
     font-family: var(--font-mono);
     font-size: 10.5px;
     letter-spacing: 0.34em;
-    color: var(--ink-3);
     text-transform: uppercase;
+    opacity: 0.55;
   }
 
-  .nav {
-    display: flex;
-    margin-inline-end: auto;
-    gap: 30px;
-    font-size: 15px;
-    color: var(--ink-2);
-  }
+  .nav { display: flex; margin-inline-end: auto; gap: 30px; font-size: 15px; }
 
-  .nav a {
-    position: relative;
-    padding-block: 6px;
-  }
+  .nav a { position: relative; padding-block: 6px; opacity: 0.78; transition: opacity 0.2s ease; }
 
   .nav a::after {
     content: '';
@@ -251,56 +199,90 @@
     inset-inline: 0;
     bottom: 0;
     height: 1px;
-    background: var(--accent);
+    background: currentColor;
     transform: scaleX(0);
     transform-origin: right;
-    transition: transform 0.28s ease;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .nav a:hover { color: var(--ink); }
+  .nav a:hover { opacity: 1; }
   .nav a:hover::after { transform: scaleX(1); }
 
-  .head-tools {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .tools { display: flex; align-items: center; gap: 9px; }
 
   .icon-btn {
-    width: 38px;
-    height: 38px;
+    width: 37px;
+    height: 37px;
     display: grid;
     place-items: center;
-    border: 1px solid var(--line);
+    border: 1px solid currentColor;
     border-radius: var(--edge);
-    background: var(--panel);
-    color: var(--ink-2);
+    background: transparent;
+    color: inherit;
+    opacity: 0.6;
     cursor: pointer;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
-  .icon-btn:hover { border-color: var(--line-2); color: var(--ink); }
+  .icon-btn:hover { opacity: 1; transform: translateY(-1px); }
 
-  /* --------------------------------------------------------------- hero */
-  .hero { border-bottom: 1px solid var(--line); }
+  /* ================================================================== hero */
+  .hero {
+    position: relative;
+    margin-top: -74px;
+    padding-top: 74px;
+    background: var(--steel);
+    color: var(--steel-ink);
+    overflow: hidden;
+  }
+
+  /* brushed metal + a raking highlight that follows the pointer */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      100deg,
+      rgba(255, 255, 255, 0.028) 0 1px,
+      transparent 1px 4px
+    );
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      420px circle at var(--mx, 68%) var(--my, 34%),
+      rgba(120, 220, 175, 0.13),
+      transparent 62%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+
+  .hero.lit::after { opacity: 1; }
 
   .hero .wrap {
+    position: relative;
+    z-index: 2;
     display: grid;
-    grid-template-columns: 1.02fr 0.98fr;
-    gap: 52px;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
     align-items: center;
-    padding-block: clamp(48px, 7vw, 92px);
+    padding-block: clamp(52px, 7vw, 88px) clamp(40px, 5vw, 64px);
   }
 
   .eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    border: 1px solid var(--line-2);
-    border-radius: 100px;
-    padding: 5px 14px 5px 12px;
-    font-size: 12px;
-    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--steel-ink-2);
     margin-bottom: 26px;
   }
 
@@ -308,163 +290,153 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--brass);
+    background: var(--led);
+    box-shadow: 0 0 0 0 rgba(95, 211, 156, 0.55);
+    animation: pulse 2.6s ease-out infinite;
   }
 
-  .hero h1 {
-    font-size: clamp(2.35rem, 5.4vw, 4.05rem);
-    line-height: 1.28;
-    margin-bottom: 22px;
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(95, 211, 156, 0.5); }
+    70% { box-shadow: 0 0 0 9px rgba(95, 211, 156, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(95, 211, 156, 0); }
   }
 
-  .hero h1 .mark {
-    position: relative;
-    color: var(--accent);
-    white-space: nowrap;
-  }
+  h1 { font-size: clamp(2.3rem, 5.1vw, 3.9rem); line-height: 1.3; margin-bottom: 24px !important; }
 
-  .hero h1 .mark::after {
-    content: '';
-    position: absolute;
-    inset-inline: -2px;
-    bottom: 0.08em;
-    height: 3px;
-    background: var(--brass);
-    opacity: 0.85;
-    transform: scaleX(0);
-    transform-origin: right;
-    animation: rule 0.9s 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
+  /* headline rises line by line out of a mask */
+  .line { display: block; overflow: hidden; }
+  .line > span { display: block; transform: translateY(105%); animation: rise 0.95s cubic-bezier(0.16, 0.9, 0.24, 1) forwards; }
+  .line:nth-child(1) > span { animation-delay: 0.05s; }
+  .line:nth-child(2) > span { animation-delay: 0.17s; }
 
-  @keyframes rule { to { transform: scaleX(1); } }
+  @keyframes rise { to { transform: none; } }
+
+  .mark { color: var(--led); }
 
   .lede {
-    font-size: 17px;
-    color: var(--ink-2);
-    max-width: 46ch;
+    font-size: 16.5px;
     line-height: 2;
+    color: var(--steel-ink-2);
+    max-width: 44ch;
+    opacity: 0;
+    animation: appear 0.9s 0.5s ease forwards;
   }
 
-  .cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 32px;
-  }
+  @keyframes appear { to { opacity: 1; } }
+
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; opacity: 0; animation: appear 0.9s 0.62s ease forwards; }
 
   .btn {
     font-family: var(--font-display);
     font-size: 14.5px;
     font-weight: 600;
-    padding: 14px 26px;
+    padding: 13px 26px;
     border-radius: var(--edge);
-    border: 1px solid var(--accent);
-    background: var(--accent);
-    color: var(--paper);
+    border: 1px solid var(--led);
+    background: var(--led);
+    color: #08130e;
     cursor: pointer;
-    transition: transform 0.18s ease, background 0.2s ease, color 0.2s ease;
+    transition: transform 0.18s ease, box-shadow 0.25s ease, background 0.2s ease;
   }
 
-  .btn:hover { background: var(--accent-2); border-color: var(--accent-2); transform: translateY(-1px); }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(95, 211, 156, 0.22); }
 
-  .btn.ghost {
-    background: transparent;
-    color: var(--ink);
-    border-color: var(--line-2);
-  }
+  .btn.ghost { background: transparent; color: var(--steel-ink); border-color: var(--steel-line); }
+  .btn.ghost:hover { border-color: var(--steel-ink-2); box-shadow: none; }
 
-  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
-
-  .stats {
-    display: flex;
-    gap: 0;
-    margin-top: 44px;
-    border-top: 1px solid var(--line);
-    padding-top: 22px;
-  }
-
-  .stat { padding-inline-end: 34px; }
-  .stat + .stat { padding-inline-start: 34px; border-inline-start: 1px solid var(--line); }
-
-  .stat b {
-    display: block;
-    font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.3;
-  }
-
-  .stat span { font-size: 12.5px; color: var(--ink-3); }
-
-  /* ------------------------------------------------------- hero artwork */
-  .shot {
+  /* ---------------------------------------------------- authenticity stage */
+  .stage {
     position: relative;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: var(--edge);
-    padding: 34px;
-    min-height: 470px;
-    display: grid;
-    place-items: center;
+    min-height: 468px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    opacity: 0;
+    animation: appear 0.8s 0.25s ease forwards;
+  }
+
+  .stage-art {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: min(340px, 84%);
+    height: auto;
+    color: var(--steel-ink);
+    opacity: 0.14;
+    pointer-events: none;
+  }
+  .stage-art .draw { stroke-dasharray: 1080; stroke-dashoffset: 1080; animation: draw 1.6s 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+  .stage-art .late { opacity: 0; animation: appear 0.7s 1.2s ease forwards; }
+
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  /* ------------------------------------------------------------- the plate */
+  .plate-wrap {
+    position: relative;
+    z-index: 1;
+    width: min(384px, 100%);
+    transform: translateY(14px);
+    opacity: 0;
+    animation: settle 0.8s 1.05s cubic-bezier(0.16, 0.9, 0.24, 1) forwards;
+  }
+
+  .plate {
+    border: 1px solid var(--plate-line);
+    border-radius: 3px;
+    padding: 16px 18px 15px;
+    color: var(--plate-ink);
+    background-image: radial-gradient(circle at 9px 9px, var(--plate-line) 2px, transparent 2.5px),
+      radial-gradient(circle at calc(100% - 9px) 9px, var(--plate-line) 2px, transparent 2.5px),
+      radial-gradient(circle at 9px calc(100% - 9px), var(--plate-line) 2px, transparent 2.5px),
+      radial-gradient(circle at calc(100% - 9px) calc(100% - 9px), var(--plate-line) 2px, transparent 2.5px),
+      linear-gradient(150deg, var(--plate-a), var(--plate-b));
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
     overflow: hidden;
   }
 
-  .shot::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 34px 34px;
-    opacity: 0.5;
-    -webkit-mask-image: radial-gradient(circle at 50% 42%, #000 12%, transparent 72%);
-    mask-image: radial-gradient(circle at 50% 42%, #000 12%, transparent 72%);
-  }
-
-  .shot svg { position: relative; width: min(330px, 78%); height: auto; color: var(--ink); }
-
-  .shot .draw {
-    stroke-dasharray: 1080;
-    stroke-dashoffset: 1080;
-    animation: draw 1.5s 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  .shot .fade { opacity: 0; animation: fade 0.8s 1.05s ease forwards; }
-
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-  @keyframes fade { to { opacity: 1; } }
-
-  /* -------------------------------------------------------- rating plate */
-  .plate {
-    position: absolute;
-    inset-inline-start: 26px;
-    bottom: 26px;
-    width: min(272px, 74%);
-    background-image: radial-gradient(circle at 9px 9px, var(--line-2) 2px, transparent 2.5px),
-      radial-gradient(circle at calc(100% - 9px) 9px, var(--line-2) 2px, transparent 2.5px),
-      radial-gradient(circle at 9px calc(100% - 9px), var(--line-2) 2px, transparent 2.5px),
-      radial-gradient(circle at calc(100% - 9px) calc(100% - 9px), var(--line-2) 2px, transparent 2.5px),
-      linear-gradient(150deg, var(--plate-a), var(--plate-b));
-    border: 1px solid var(--line-2);
-    border-radius: 3px;
-    padding: 15px 18px 14px;
-    color: var(--plate-ink);
-    box-shadow: 0 12px 28px rgba(9, 26, 19, 0.14);
-  }
+  @keyframes settle { to { transform: none; opacity: 1; } }
 
   .plate-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    border-bottom: 1px solid var(--line-2);
-    padding-bottom: 8px;
-    margin-bottom: 9px;
+    border-bottom: 1px solid var(--plate-line);
+    padding-bottom: 9px;
+    margin-bottom: 10px;
   }
 
   .plate-top .mono { font-size: 9.5px; letter-spacing: 0.24em; font-weight: 500; white-space: nowrap; }
 
-  .plate-rows { display: grid; gap: 3px; }
+  .seal {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--brass-ink);
+  }
+
+  .seal svg { flex: none; }
+  .plate[data-state='ok'] .ic.no,
+  .plate[data-state='none'] .ic.ok { display: none; }
+
+  .plate[data-state='ok'] .seal { animation: stamp 0.5s 0.1s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+  .plate[data-state='none'] .seal { color: var(--ink-3); }
+
+  @keyframes stamp {
+    0% { transform: scale(1.5) rotate(-7deg); opacity: 0; }
+    60% { transform: scale(0.96) rotate(1deg); opacity: 1; }
+    100% { transform: none; opacity: 1; }
+  }
+
+  .plate-name { font-size: 13.5px; font-weight: 500; line-height: 1.7; margin-bottom: 10px; min-height: 1.7em; }
+
+  .plate-rows { display: grid; gap: 4px; }
 
   .plate-rows div {
     display: flex;
@@ -476,84 +448,141 @@
     direction: ltr;
   }
 
-  .plate-rows span { color: var(--ink-3); }
+  .plate-rows dt, .plate-rows span:first-child { color: color-mix(in srgb, var(--plate-ink) 55%, transparent); }
+  .plate-rows b { font-weight: 500; }
 
-  .seal {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-display);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-    color: var(--brass);
+  /* the scan pass that runs on every lookup */
+  .scan {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 34%;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in srgb, var(--led) 34%, transparent),
+      transparent
+    );
+    opacity: 0;
+    pointer-events: none;
   }
 
-  /* --------------------------------------------------------------- ticker */
-  .ticker {
-    background: var(--band);
-    color: var(--band-ink);
-    overflow: hidden;
-    border-block: 1px solid var(--band-line);
+  .plate.busy .scan { animation: sweep 0.85s cubic-bezier(0.4, 0, 0.2, 1); }
+
+  @keyframes sweep {
+    0% { transform: translateY(-120%); opacity: 0.2; }
+    35% { opacity: 1; }
+    100% { transform: translateY(340%); opacity: 0; }
   }
 
-  .ticker-track {
-    display: flex;
-    width: max-content;
-    animation: slide 42s linear infinite;
+  .plate.shake { animation: shake 0.42s ease; }
+
+  @keyframes shake {
+    0%, 100% { transform: none; }
+    25% { transform: translateX(5px); }
+    50% { transform: translateX(-4px); }
+    75% { transform: translateX(2px); }
   }
 
-  .ticker-track span {
-    display: inline-flex;
-    align-items: center;
-    gap: 26px;
-    padding-inline: 26px;
-    height: 52px;
-    font-family: var(--font-display);
+  /* -------------------------------------------------------------- the form */
+  .check {
+    position: relative;
+    z-index: 1;
+    width: min(384px, 100%);
+  }
+
+  .check label { display: block; font-size: 12.5px; color: var(--steel-ink-2); margin-bottom: 10px; }
+  .check label .mono { font-size: 10.5px; letter-spacing: 0.18em; margin-inline-end: 4px; }
+
+  .check-row { display: flex; gap: 8px; }
+
+  .check input {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-mono);
     font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-  }
-
-  .ticker-track span::after {
-    content: '';
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--brass);
-  }
-
-  @keyframes slide { to { transform: translateX(50%); } }
-
-  /* --------------------------------------------------------------- sections */
-  .sec { padding-block: var(--step); border-bottom: 1px solid var(--line); }
-
-  .sec-head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 24px;
-    margin-bottom: 38px;
-  }
-
-  .sec-head h2 { font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
-  .sec-head p { color: var(--ink-2); font-size: 15px; margin-top: 8px; max-width: 52ch; }
-
-  .more {
-    font-family: var(--font-display);
-    font-size: 13.5px;
-    font-weight: 600;
-    color: var(--accent);
-    white-space: nowrap;
-    border-bottom: 1px solid transparent;
+    letter-spacing: 0.08em;
+    direction: ltr;
+    text-align: left;
+    padding: 11px 12px;
+    color: var(--steel-ink);
+    background: color-mix(in srgb, var(--steel-2) 92%, transparent);
+    border: 1px solid var(--steel-line);
+    border-radius: var(--edge);
     transition: border-color 0.2s ease;
   }
 
+  .check input::placeholder { color: color-mix(in srgb, var(--steel-ink-2) 60%, transparent); }
+  .check input:hover { border-color: var(--steel-ink-2); }
+
+  .check button {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    padding-inline: 18px;
+    color: #08130e;
+    background: var(--led);
+    border: 0;
+    border-radius: var(--edge);
+    cursor: pointer;
+    transition: transform 0.18s ease, filter 0.2s ease;
+  }
+
+  .check button:hover { transform: translateY(-1px); filter: brightness(1.06); }
+
+  .samples { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+  .samples button {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    padding: 4px 9px;
+    color: var(--steel-ink-2);
+    background: transparent;
+    border: 1px solid var(--steel-line);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .samples button:hover { color: var(--led); border-color: var(--led); }
+
+  /* --------------------------------------------------------- promise strip */
+  .promise {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--steel-line);
+  }
+
+  .promise .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
+
+  .promise div {
+    padding: 22px 26px;
+    font-size: 13.5px;
+    color: var(--steel-ink-2);
+    opacity: 0;
+    animation: appear 0.7s ease forwards;
+  }
+
+  .promise div + div { border-inline-start: 1px solid var(--steel-line); }
+  .promise div:nth-child(1) { animation-delay: 0.8s; }
+  .promise div:nth-child(2) { animation-delay: 0.92s; }
+  .promise div:nth-child(3) { animation-delay: 1.04s; }
+  .promise div:nth-child(4) { animation-delay: 1.16s; }
+
+  .promise b { display: block; font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--steel-ink); }
+
+  /* ============================================================== sections */
+  .sec { padding-block: var(--step); border-bottom: 1px solid var(--line); }
+
+  .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 40px; }
+  .sec-head h2 { font-size: clamp(1.5rem, 2.6vw, 2.05rem); }
+  .sec-head p { color: var(--ink-2); font-size: 15px; margin-top: 8px; max-width: 50ch; }
+
+  .more { font-family: var(--font-display); font-size: 13.5px; font-weight: 600; color: var(--accent); white-space: nowrap; border-bottom: 1px solid transparent; }
   .more:hover { border-color: var(--accent); }
 
-  /* --------------------------------------------------------------- grid of categories */
+  /* -------------------------------------------------------------- category */
   .cats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -565,39 +594,35 @@
   }
 
   .cat {
+    position: relative;
     background: var(--panel);
-    padding: 30px 26px 26px;
+    padding: 28px 26px 24px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    transition: background 0.22s ease;
+    gap: 14px;
+    overflow: hidden;
   }
 
-  .cat:hover { background: var(--panel-2); }
-  .cat:hover svg { color: var(--accent); transform: translateY(-3px); }
+  /* the green wipes up from the floor of the cell */
+  .cat::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--panel-2);
+    transform: translateY(100%);
+    transition: transform 0.42s cubic-bezier(0.16, 0.9, 0.24, 1);
+  }
 
-  .cat svg { width: 46px; height: 46px; color: var(--ink-2); transition: color 0.22s ease, transform 0.22s ease; }
+  .cat > * { position: relative; }
+  .cat:hover::before { transform: none; }
+  .cat:hover svg { color: var(--accent); }
 
+  .cat svg { width: 44px; height: 44px; color: var(--ink-2); transition: color 0.3s ease; }
   .cat h3 { font-size: 17px; }
-  .cat .count { font-size: 12.5px; color: var(--ink-3); }
+  .cat .count { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); }
 
-  .cat .go {
-    margin-top: auto;
-    font-size: 13px;
-    color: var(--accent);
-    opacity: 0;
-    transform: translateX(6px);
-    transition: opacity 0.22s ease, transform 0.22s ease;
-  }
-
-  .cat:hover .go { opacity: 1; transform: none; }
-
-  /* --------------------------------------------------------------- products */
-  .prods {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 22px;
-  }
+  /* -------------------------------------------------------------- products */
+  .prods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
 
   .prod {
     border: 1px solid var(--line);
@@ -605,26 +630,53 @@
     background: var(--panel);
     display: flex;
     flex-direction: column;
-    transition: border-color 0.22s ease, transform 0.22s ease;
+    transition: border-color 0.25s ease, transform 0.25s ease;
   }
 
-  .prod:hover { border-color: var(--line-2); transform: translateY(-3px); }
+  .prod:hover, .prod:focus-within { border-color: var(--line-2); transform: translateY(-3px); }
 
-  .prod-art {
+  .flipper { height: 212px; border-bottom: 1px solid var(--line); perspective: 900px; }
+
+  .flip {
     position: relative;
-    height: 210px;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .prod:hover .flip, .prod:focus-within .flip { transform: rotateY(180deg); }
+
+  .face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
     display: grid;
     place-items: center;
-    border-bottom: 1px solid var(--line);
-    background: linear-gradient(160deg, var(--panel), var(--panel-2));
+    border-radius: 3px 3px 0 0;
   }
 
-  .prod-art svg { width: 108px; height: 108px; color: var(--ink); }
+  .face.front { background: linear-gradient(160deg, var(--panel), var(--panel-2)); }
+  .face.front svg { width: 106px; height: 106px; color: var(--ink); }
+
+  .face.back {
+    transform: rotateY(180deg);
+    background: linear-gradient(150deg, var(--plate-a), var(--plate-b));
+    color: var(--plate-ink);
+    align-content: center;
+    justify-items: stretch;
+    padding: 20px 22px;
+    gap: 5px;
+  }
+
+  .face.back .plate-rows { width: 100%; }
+  .face.back .cap { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.2em; color: color-mix(in srgb, var(--plate-ink) 55%, transparent); margin-bottom: 6px; }
 
   .chip {
     position: absolute;
     top: 12px;
     inset-inline-start: 12px;
+    z-index: 2;
     font-family: var(--font-display);
     font-size: 10px;
     font-weight: 600;
@@ -633,14 +685,17 @@
     border-radius: 2px;
     background: var(--brass-soft);
     color: var(--brass-ink);
-    border: 1px solid color-mix(in srgb, var(--brass) 30%, transparent);
+    border: 1px solid color-mix(in srgb, var(--brass) 32%, transparent);
+    transition: opacity 0.25s ease;
   }
 
+  /* the chip belongs to the front of the card — it clears out on the flip */
+  .prod:hover .chip, .prod:focus-within .chip { opacity: 0; }
+
   .prod-body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-
-  .prod-body h3 { font-size: 15.5px; line-height: 1.7; font-family: var(--font-body); font-weight: 500; }
-
+  .prod-body h3 { font-family: var(--font-body); font-weight: 500; font-size: 15.5px; line-height: 1.7; }
   .prod-body .mono { font-size: 11px; color: var(--ink-3); }
+  .hint { font-size: 11.5px; color: var(--ink-3); }
 
   .price {
     margin-top: auto;
@@ -652,42 +707,73 @@
     gap: 8px;
   }
 
-  .price b {
-    font-family: var(--font-display);
-    font-size: 17px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-  }
-
+  .price b { font-family: var(--font-display); font-size: 17px; font-variant-numeric: tabular-nums; }
   .price small { font-size: 12px; color: var(--ink-3); }
 
-  /* --------------------------------------------------------------- process */
-  .proc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+  /* ----------------------------------------------------------------- route */
+  .route { position: relative; padding-block: 26px 0; }
 
-  .step { padding-inline: 34px; }
-  .step:first-child { padding-inline-start: 0; }
-  .step:last-child { padding-inline-end: 0; }
-  .step + .step { border-inline-start: 1px solid var(--line); }
+  .rail { position: relative; height: 2px; background: repeating-linear-gradient(90deg, var(--line-2) 0 7px, transparent 7px 14px); }
 
-  .step .no {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--brass);
-    letter-spacing: 0.2em;
-    display: block;
-    margin-bottom: 16px;
+  .rail .fill {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 100%;
+    background: var(--accent);
+    transform-origin: right;
+    transform: scaleX(1);
   }
 
-  .step h3 { font-size: 18px; margin-bottom: 10px; }
-  .step p { color: var(--ink-2); font-size: 14.5px; }
-
-  /* --------------------------------------------------------------- brands */
-  .brands {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 14px 42px;
+  .pkg {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 0;
+    width: 34px;
+    height: 34px;
+    margin-top: -17px;
+    margin-inline-start: -17px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper);
+    box-shadow: 0 6px 18px rgba(20, 84, 58, 0.28);
   }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .rail .fill {
+        transform: scaleX(0);
+        animation: grow linear both;
+        animation-timeline: view();
+        animation-range: entry 42% cover 62%;
+      }
+
+      .pkg {
+        inset-inline-start: 100%;
+        animation: ride linear both;
+        animation-timeline: view();
+        animation-range: entry 42% cover 62%;
+      }
+
+      @keyframes grow { to { transform: scaleX(1); } }
+      @keyframes ride { to { inset-inline-start: 0%; } }
+    }
+  }
+
+  .stops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 30px; }
+
+  .stop { padding-inline: 32px; }
+  .stop:first-child { padding-inline-start: 0; }
+  .stop:last-child { padding-inline-end: 0; }
+  .stop + .stop { border-inline-start: 1px solid var(--line); }
+
+  .stop .no { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--brass-ink); display: block; margin-bottom: 14px; }
+  .stop h3 { font-size: 18px; margin-bottom: 10px; }
+  .stop p { color: var(--ink-2); font-size: 14.5px; }
+
+  /* ---------------------------------------------------------------- brands */
+  .brands { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 42px; }
 
   .brands a {
     font-family: var(--font-mono);
@@ -695,151 +781,100 @@
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--ink-3);
-    transition: color 0.2s ease;
+    transition: color 0.22s ease, letter-spacing 0.22s ease;
   }
 
-  .brands a:hover { color: var(--ink); }
+  .brands a:hover { color: var(--ink); letter-spacing: 0.2em; }
 
-  /* --------------------------------------------------------------- foot */
-  .foot {
-    background: var(--band);
-    color: var(--band-ink);
-    padding-block: 62px 30px;
-  }
+  /* ---------------------------------------------------------------- footer */
+  .foot { background: var(--steel); color: var(--steel-ink); padding-block: 62px 28px; }
 
   .foot-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
     gap: 40px;
-    padding-bottom: 40px;
-    border-bottom: 1px solid var(--band-line);
+    padding-bottom: 38px;
+    border-bottom: 1px solid var(--steel-line);
   }
 
-  .foot h4 {
-    font-family: var(--font-display);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    margin: 0 0 18px;
-    opacity: 0.65;
-  }
-
+  .foot h4 { font-family: var(--font-display); font-size: 11.5px; font-weight: 600; letter-spacing: 0.16em; margin: 0 0 18px; color: var(--steel-ink-2); }
   .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 14px; }
-  .foot ul a { opacity: 0.88; }
-  .foot ul a:hover { opacity: 1; color: #fff; }
+  .foot ul a { color: var(--steel-ink); opacity: 0.82; }
+  .foot ul a:hover { opacity: 1; }
+  .foot-note { color: var(--steel-ink-2); font-size: 13.5px; line-height: 2; margin-top: 16px; max-width: 34ch; }
+  .tel { font-family: var(--font-mono); font-size: 15px; letter-spacing: 0.08em; }
 
-  .foot .brand-fa { font-size: 24px; }
-  .foot .brand-en { color: color-mix(in srgb, var(--band-ink) 55%, transparent); }
+  .foot-bottom { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 22px; font-size: 12.5px; color: var(--steel-ink-2); }
 
-  .foot-note {
-    color: color-mix(in srgb, var(--band-ink) 62%, transparent);
-    font-size: 13.5px;
-    line-height: 2;
-    margin-top: 16px;
-    max-width: 34ch;
-  }
-
-  .tel {
-    font-family: var(--font-mono);
-    font-size: 15px;
-    letter-spacing: 0.08em;
-    display: block;
-  }
-
-  .foot-bottom {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-    padding-top: 22px;
-    font-size: 12.5px;
-    color: color-mix(in srgb, var(--band-ink) 60%, transparent);
-  }
-
-  /* ------------------------------------------------- responsive */
-  @media (max-width: 1040px) {
+  /* ------------------------------------------------------------ responsive */
+  @media (max-width: 1080px) {
     .prods { grid-template-columns: repeat(2, 1fr); }
     .nav { display: none; }
     .brand { margin-inline-end: auto; }
   }
 
-  @media (max-width: 900px) {
-    .hero .wrap { grid-template-columns: 1fr; gap: 40px; }
-    .shot { min-height: 400px; }
+  @media (max-width: 960px) {
+    .hero .wrap { grid-template-columns: 1fr; gap: 34px; }
+    .stage { min-height: 0; }
+    .stage-art { display: none; }
+    .check, .plate-wrap { width: 100%; }
+    .promise .wrap { grid-template-columns: repeat(2, 1fr); }
+    .promise div:nth-child(3) { border-inline-start: 0; }
+    .promise div:nth-child(n + 3) { border-top: 1px solid var(--steel-line); }
     .cats { grid-template-columns: repeat(2, 1fr); }
-    .proc { grid-template-columns: 1fr; }
-    .step { padding-inline: 0; padding-block: 26px; }
-    .step + .step { border-inline-start: 0; border-top: 1px solid var(--line); }
+    .stops { grid-template-columns: 1fr; }
+    .stop { padding-inline: 0; padding-block: 24px; }
+    .stop + .stop { border-inline-start: 0; border-top: 1px solid var(--line); }
     .foot-grid { grid-template-columns: 1fr 1fr; }
-    .util-links a:nth-child(2) { display: none; }
   }
 
   @media (max-width: 620px) {
-    .cats { grid-template-columns: 1fr; }
-    .prods { grid-template-columns: 1fr; }
+    .cats, .prods { grid-template-columns: 1fr; }
+    .promise .wrap { grid-template-columns: 1fr; }
+    .promise div + div { border-inline-start: 0; border-top: 1px solid var(--steel-line); }
     .foot-grid { grid-template-columns: 1fr; }
-    .stats { flex-wrap: wrap; gap: 18px; }
-    .stat + .stat { border-inline-start: 0; padding-inline-start: 0; }
-    .plate { position: static; width: 100%; margin-top: 22px; }
-    .shot { min-height: 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .page *, .page *::before, .page *::after {
       animation-duration: 0.001ms !important;
+      animation-delay: 0ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.001ms !important;
     }
-    .ticker-track { animation: none; }
-    .shot .draw { stroke-dashoffset: 0; }
-    .shot .fade { opacity: 1; }
+    .line > span, .lede, .cta-row, .stage, .plate-wrap, .promise div, .stage-art .late { opacity: 1; transform: none; }
+    .stage-art .draw { stroke-dashoffset: 0; }
   }
 </style>
 
 <div class="page" dir="rtl" lang="fa">
-  <!-- ============================================================ util -->
-  <div class="util">
+  <!-- =========================================================== header -->
+  <header class="head" id="head">
     <div class="wrap">
-      <div><span class="util-dot"></span>ارسال تضمینی به سراسر ایران — تحویل ۲ تا ۴ روز کاری</div>
-      <div class="util-links">
-        <a href="#">پیگیری سفارش</a>
-        <a href="#">راهنمای خرید</a>
-        <a class="mono num" href="tel:+989183545845">0918 354 5845</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================================================ header -->
-  <header class="head">
-    <div class="wrap">
-      <a class="brand" href="#">
-        <span class="brand-fa">وانکو</span>
-        <span class="brand-en">wanko</span>
-      </a>
+      <a class="brand" href="#"><span class="brand-fa">وانکو</span><span class="brand-en mono">wanko</span></a>
 
       <nav class="nav">
         <a href="#cats">دسته‌بندی‌ها</a>
         <a href="#new">تازه‌ها</a>
-        <a href="#proof">اصالت کالا</a>
+        <a href="#route">مسیر کالا</a>
         <a href="#brands">برندها</a>
         <a href="#contact">تماس</a>
       </nav>
 
-      <div class="head-tools">
+      <div class="tools">
         <button class="icon-btn" aria-label="جست‌وجو">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-            <circle cx="11" cy="11" r="7" />
-            <path d="M16.5 16.5 21 21" stroke-linecap="round" />
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="11" cy="11" r="7" /><path d="M16.5 16.5 21 21" stroke-linecap="round" />
           </svg>
         </button>
         <button class="icon-btn" aria-label="سبد خرید">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <path d="M4 7h16l-1.4 12.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8Z" stroke-linejoin="round" />
             <path d="M9 7a3 3 0 0 1 6 0" stroke-linecap="round" />
           </svg>
         </button>
         <button class="icon-btn" id="theme" aria-label="حالت روشن و تاریک">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke-linejoin="round" />
           </svg>
         </button>
@@ -847,94 +882,106 @@
     </div>
   </header>
 
-  <!-- ============================================================ hero -->
-  <section class="hero">
+  <!-- ============================================================= hero -->
+  <section class="hero" id="hero">
     <div class="wrap">
       <div>
-        <span class="eyebrow"><span class="pip"></span> واردات مستقیم • بانه، کردستان</span>
+        <span class="eyebrow"><span class="pip"></span> BANEH · KURDISTAN · DIRECT IMPORT</span>
 
-        <h1>لوازم خانگی اروپایی،<br />با <span class="mark">شناسنامهٔ کالا</span>.</h1>
+        <h1>
+          <span class="line"><span>سریالش را بزن،</span></span>
+          <span class="line"><span>ببین <span class="mark">اصل</span> است یا نه.</span></span>
+        </h1>
 
         <p class="lede">
-          هر دستگاهی که از وانکو می‌خری با مدل، سریال و کشور سازنده روی کارت اصالت ثبت
-          می‌شود. اگر پسند نکردی، پانزده روز وقت داری پس بدهی — بدون پرسش.
+          هر دستگاهی که از انبار وانکو بیرون می‌رود، سریالش ثبت می‌شود. قبل از خرید، حین
+          خرید، یا سه سال بعد — همان کد را اینجا بزن و ببین چه چیزی به نامش خورده است.
         </p>
 
         <div class="cta-row">
           <button class="btn">دیدن محصولات</button>
-          <button class="btn ghost">اصالت را چطور ثابت می‌کنیم؟</button>
-        </div>
-
-        <div class="stats">
-          <div class="stat"><b class="num">۳۴ هزار</b><span>مشتری و دنبال‌کننده</span></div>
-          <div class="stat"><b class="num">۱۵ روز</b><span>حق بازگشت وجه</span></div>
-          <div class="stat"><b class="num">۱۲ ماه</b><span>سرویس رایگان</span></div>
+          <button class="btn ghost">۱۵ روز حق بازگشت</button>
         </div>
       </div>
 
-      <!-- artwork: cordless vacuum, drawn as line art -->
-      <div class="shot">
-        <svg viewBox="0 0 300 344" fill="none" stroke="currentColor" stroke-width="1.7"
+      <div class="stage">
+        <!-- the appliance itself, drawn once on load -->
+        <svg class="stage-art" viewBox="0 0 300 344" fill="none" stroke="currentColor" stroke-width="1.7"
              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path class="draw"
                 d="M86 34h128a26 26 0 0 1 26 26v212a26 26 0 0 1-26 26H86a26 26 0 0 1-26-26V60a26 26 0 0 1 26-26Z" />
-          <g class="fade">
+          <g class="late">
             <path d="M60 124h180" />
             <rect x="88" y="60" width="80" height="40" rx="10" />
             <path d="M104 74h30M104 86h46" />
-            <circle cx="206" cy="80" r="17" />
-            <path d="M206 68v9" />
+            <circle cx="206" cy="80" r="17" /><path d="M206 68v9" />
             <path d="M78 152h144a12 12 0 0 1 12 12v90a12 12 0 0 1-12 12H78a12 12 0 0 1-12-12v-90a12 12 0 0 1 12-12Z" />
             <path d="M120 198h60a10 10 0 0 1 0 20h-60a10 10 0 0 1 0-20Z" />
             <path d="M84 298v14M216 298v14" />
-            <path d="M132 18c0 8-8 8-8 16M150 12c0 9-8 9-8 17M168 18c0 8-8 8-8 16" opacity="0.55" />
           </g>
         </svg>
 
-        <div class="plate">
+        <!-- the lookup -->
+        <form class="check" id="check" autocomplete="off">
+          <label for="sn"><span class="mono">SERIAL</span> کد روی پلاک پشت دستگاه — یا یکی از نمونه‌ها را بزن</label>
+          <div class="check-row">
+            <input id="sn" name="sn" inputmode="latin" spellcheck="false" placeholder="WK-0000-0000" aria-describedby="samples" />
+            <button type="submit">استعلام</button>
+          </div>
+          <div class="samples" id="samples">
+            <button type="button" data-sn="WK-4021-8837">WK-4021-8837</button>
+            <button type="button" data-sn="WK-3390-1204">WK-3390-1204</button>
+            <button type="button" data-sn="WK-9000-0001">WK-9000-0001</button>
+          </div>
+        </form>
+
+        <!-- the plate that answers -->
+        <div class="plate-wrap">
+        <div class="plate" id="plate" data-state="ok" aria-live="polite">
+          <span class="scan"></span>
           <div class="plate-top">
-            <span class="mono">KOCHWERK · ORIGINAL</span>
-            <span class="seal">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+            <span class="mono" id="p-brand">KOCHWERK · ORIGINAL</span>
+            <span class="seal" id="p-seal">
+              <svg class="ic ok" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
                 <path d="m5 12.5 4.5 4.5L19 7" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              تأیید شد
+              <svg class="ic no" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="9" /><path d="M12 7.5v6" stroke-linecap="round" /><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none" />
+              </svg>
+              <span id="p-verdict">ثبت‌شده در انبار وانکو</span>
             </span>
           </div>
+          <div class="plate-name" id="p-name">سرخ‌کن بدون روغن کوخورک ۷ لیتری</div>
           <div class="plate-rows">
-            <div><span>MODEL</span><em class="mono" style="font-style: normal">AF-90</em></div>
-            <div><span>ORIGIN</span><em class="mono" style="font-style: normal">GERMANY</em></div>
-            <div><span>POWER</span><em class="mono" style="font-style: normal">220–240V · 1700W</em></div>
-            <div><span>SERIAL</span><em class="mono" style="font-style: normal">WK-4021-8837</em></div>
+            <div><span>MODEL</span><b class="mono" id="p-model">AF-90</b></div>
+            <div><span>ORIGIN</span><b class="mono" id="p-origin">GERMANY</b></div>
+            <div><span>POWER</span><b class="mono" id="p-power">220–240V · 1700W</b></div>
+            <div><span>SERIAL</span><b class="mono" id="p-serial">WK-4021-8837</b></div>
+            <div><span>WARRANTY</span><b class="mono" id="p-warranty">2026-07-22</b></div>
           </div>
         </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="promise">
+      <div class="wrap">
+        <div><b>۱۵ روز</b>حق بازگشت وجه، بی‌پرسش</div>
+        <div><b>۱۲ ماه</b>سرویس رایگان</div>
+        <div><b>پلمب</b>کارتن دست‌نخورده و فاکتور رسمی</div>
+        <div><b>۲ تا ۴ روز</b>ارسال تضمینی به سراسر ایران</div>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================ ticker -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>اصالت کالا تضمینی</span>
-      <span>۱۵ روز بازگشت وجه</span>
-      <span>یک سال سرویس رایگان</span>
-      <span>فاکتور رسمی</span>
-      <span>ارسال تضمینی</span>
-      <span>اصالت کالا تضمینی</span>
-      <span>۱۵ روز بازگشت وجه</span>
-      <span>یک سال سرویس رایگان</span>
-      <span>فاکتور رسمی</span>
-      <span>ارسال تضمینی</span>
-    </div>
-  </div>
-
-  <!-- ============================================================ categories -->
+  <!-- ======================================================= categories -->
   <section class="sec" id="cats">
     <div class="wrap">
+      <div class="index mono">SEC 01 · CATEGORIES · 06</div>
+
       <div class="sec-head">
         <div>
-          <span class="label">دسته‌بندی</span>
-          <h2 style="margin-top: 12px">از کجا شروع کنیم؟</h2>
+          <h2>از کجا شروع کنیم؟</h2>
           <p>شش خانواده‌ای که بیشترین سفارش را دارند. هر کدام فقط با برندهای اروپایی پر شده‌اند.</p>
         </div>
         <a class="more" href="#">همهٔ دسته‌ها ←</a>
@@ -945,12 +992,10 @@
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M24 4h6a5 5 0 0 1 5 5v5H24z" />
             <path d="M18 14h18a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3Z" />
-            <circle cx="27" cy="21" r="4.5" />
-            <path d="M22 28 16 39" />
+            <circle cx="27" cy="21" r="4.5" /><path d="M22 28 16 39" />
             <path d="M7 39h16a2 2 0 0 1 2 2v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-2a2 2 0 0 1 2-2Z" />
           </svg>
-          <div><h3>جارو شارژی</h3><div class="count num">۲۸ محصول</div></div>
-          <span class="go">دیدن ←</span>
+          <div><h3>جارو شارژی</h3><div class="count">۲۸ محصول</div></div>
         </a>
 
         <a class="cat" href="#">
@@ -958,8 +1003,7 @@
             <path d="M11 14h26a3 3 0 0 1 3 3v18a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V17a3 3 0 0 1 3-3Z" />
             <path d="M16 14V9h16v5" /><path d="M14 24h20" /><circle cx="24" cy="31" r="3" />
           </svg>
-          <div><h3>سرخ‌کن بدون روغن</h3><div class="count num">۱۹ محصول</div></div>
-          <span class="go">دیدن ←</span>
+          <div><h3>سرخ‌کن بدون روغن</h3><div class="count">۱۹ محصول</div></div>
         </a>
 
         <a class="cat" href="#">
@@ -969,8 +1013,7 @@
             <path d="M31 15h4a6 6 0 0 1 6 6v10a3 3 0 0 1-3 3H29a3 3 0 0 1-3-3V21a6 6 0 0 1 5-6Z" />
             <circle cx="31" cy="38" r="2" /><circle cx="38" cy="38" r="2" />
           </svg>
-          <div><h3>جاروبرقی</h3><div class="count num">۲۲ محصول</div></div>
-          <span class="go">دیدن ←</span>
+          <div><h3>جاروبرقی</h3><div class="count">۲۲ محصول</div></div>
         </a>
 
         <a class="cat" href="#">
@@ -978,55 +1021,66 @@
             <path d="M10 12h18a8 8 0 0 1 0 16H10z" /><circle cx="19" cy="20" r="4" />
             <path d="M28 20h10" /><path d="M20 28v8a4 4 0 0 0 4 4h6" /><path d="M30 36h8" />
           </svg>
-          <div><h3>سشوار و حالت‌دهنده</h3><div class="count num">۱۴ محصول</div></div>
-          <span class="go">دیدن ←</span>
+          <div><h3>سشوار و حالت‌دهنده</h3><div class="count">۱۴ محصول</div></div>
         </a>
 
         <a class="cat" href="#">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M11 20h26v10a8 8 0 0 1-8 8H19a8 8 0 0 1-8-8z" /><path d="M8 20h32" />
-            <path d="M11 25H6M37 25h5" />
-            <path d="M20 13c0-3 3-3 3-6M27 15c0-3 3-3 3-6" opacity="0.6" />
+            <path d="M11 25H6M37 25h5" /><path d="M20 13c0-3 3-3 3-6M27 15c0-3 3-3 3-6" opacity="0.6" />
           </svg>
-          <div><h3>لوازم پخت‌وپز</h3><div class="count num">۳۶ محصول</div></div>
-          <span class="go">دیدن ←</span>
+          <div><h3>لوازم پخت‌وپز</h3><div class="count">۳۶ محصول</div></div>
         </a>
 
         <a class="cat" href="#">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 8h8v8h-8z" /><path d="M24 16v14" /><path d="M12 30h24v6a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" />
-            <path d="M16 36h16" /><path d="M31 12c4 2 6 5 6 9" />
+            <path d="M20 8h8v8h-8z" /><path d="M24 16v14" />
+            <path d="M12 30h24v6a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" /><path d="M16 36h16" />
+            <path d="M31 12c4 2 6 5 6 9" />
           </svg>
-          <div><h3>کف‌شوی و بخارشوی</h3><div class="count num">۱۱ محصول</div></div>
-          <span class="go">دیدن ←</span>
+          <div><h3>کف‌شوی و بخارشوی</h3><div class="count">۱۱ محصول</div></div>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================ products -->
+  <!-- ========================================================= products -->
   <section class="sec" id="new">
     <div class="wrap">
+      <div class="index mono">SEC 02 · IN STOCK · BANEH</div>
+
       <div class="sec-head">
         <div>
-          <span class="label">تازه رسیده</span>
-          <h2 style="margin-top: 12px">این هفته از انبار بانه</h2>
-          <p>موجودی واقعی، نه پیش‌فروش. هر کدام با کارتن پلمب و کارت اصالت تحویل داده می‌شود.</p>
+          <h2>این هفته از انبار بانه</h2>
+          <p>موجودی واقعی، نه پیش‌فروش. نشانگر را روی هر کارت ببر تا پلاک مشخصاتش را ببینی.</p>
         </div>
         <a class="more" href="#">همهٔ محصولات ←</a>
       </div>
 
       <div class="prods">
-        <article class="prod">
-          <div class="prod-art">
+        <article class="prod" tabindex="0">
+          <div class="flipper">
             <span class="chip">کارت اصالت</span>
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M24 4h6a5 5 0 0 1 5 5v5H24z" />
-              <path d="M18 14h18a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3Z" />
-              <circle cx="27" cy="21" r="4.5" />
-              <path d="M22 28 16 39" />
-              <path d="M7 39h16a2 2 0 0 1 2 2v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-2a2 2 0 0 1 2-2Z" />
-            </svg>
+            <div class="flip">
+              <div class="face front">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M24 4h6a5 5 0 0 1 5 5v5H24z" />
+                  <path d="M18 14h18a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3Z" />
+                  <circle cx="27" cy="21" r="4.5" /><path d="M22 28 16 39" />
+                  <path d="M7 39h16a2 2 0 0 1 2 2v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-2a2 2 0 0 1 2-2Z" />
+                </svg>
+              </div>
+              <div class="face back">
+                <div class="cap">RATING PLATE</div>
+                <div class="plate-rows">
+                  <div><span>MODEL</span><b class="mono">REDKEY W12</b></div>
+                  <div><span>ORIGIN</span><b class="mono">GERMANY</b></div>
+                  <div><span>POWER</span><b class="mono">25.9V · 450W</b></div>
+                  <div><span>RUNTIME</span><b class="mono">60 MIN</b></div>
+                  <div><span>SERIAL</span><b class="mono">WK-3390-1204</b></div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="prod-body">
             <h3>جارو شارژی سه‌کاره ردکی آلمان</h3>
@@ -1035,16 +1089,30 @@
           </div>
         </article>
 
-        <article class="prod">
-          <div class="prod-art">
+        <article class="prod" tabindex="0">
+          <div class="flipper">
             <span class="chip">کارت اصالت</span>
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 14h20a6 6 0 0 1 6 6v12a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V20a6 6 0 0 1 6-6Z" />
-              <path d="M18 14V9a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v5" />
-              <path d="M12 26c3 0 3 2 6 2s3-2 6-2 3 2 6 2 3-2 6-2" />
-              <circle cx="16" cy="40" r="2" /><circle cx="32" cy="40" r="2" />
-              <path d="M40 22h2a4 4 0 0 1 4 4v6" />
-            </svg>
+            <div class="flip">
+              <div class="face front">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 14h20a6 6 0 0 1 6 6v12a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V20a6 6 0 0 1 6-6Z" />
+                  <path d="M18 14V9a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v5" />
+                  <path d="M12 26c3 0 3 2 6 2s3-2 6-2 3 2 6 2 3-2 6-2" />
+                  <circle cx="16" cy="40" r="2" /><circle cx="32" cy="40" r="2" />
+                  <path d="M40 22h2a4 4 0 0 1 4 4v6" />
+                </svg>
+              </div>
+              <div class="face back">
+                <div class="cap">RATING PLATE</div>
+                <div class="plate-rows">
+                  <div><span>MODEL</span><b class="mono">FASDUNT HV1</b></div>
+                  <div><span>ORIGIN</span><b class="mono">GERMANY</b></div>
+                  <div><span>POWER</span><b class="mono">21.6V · 400W</b></div>
+                  <div><span>TANK</span><b class="mono">0.8 L</b></div>
+                  <div><span>SERIAL</span><b class="mono">WK-2871-6650</b></div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="prod-body">
             <h3>جارو شارژی آب و خاک فستدانت</h3>
@@ -1053,13 +1121,27 @@
           </div>
         </article>
 
-        <article class="prod">
-          <div class="prod-art">
+        <article class="prod" tabindex="0">
+          <div class="flipper">
             <span class="chip">کارت اصالت</span>
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 12h24a2 2 0 0 1 2 2v20a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V14a2 2 0 0 1 2-2Z" />
-              <path d="M16 12V8h16v4" /><path d="M14 26h20" /><circle cx="24" cy="32" r="3" /><path d="M17 20h14" />
-            </svg>
+            <div class="flip">
+              <div class="face front">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 12h24a2 2 0 0 1 2 2v20a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V14a2 2 0 0 1 2-2Z" />
+                  <path d="M16 12V8h16v4" /><path d="M14 26h20" /><circle cx="24" cy="32" r="3" /><path d="M17 20h14" />
+                </svg>
+              </div>
+              <div class="face back">
+                <div class="cap">RATING PLATE</div>
+                <div class="plate-rows">
+                  <div><span>MODEL</span><b class="mono">KOCHWERK AF-90</b></div>
+                  <div><span>ORIGIN</span><b class="mono">GERMANY</b></div>
+                  <div><span>POWER</span><b class="mono">220–240V · 1700W</b></div>
+                  <div><span>CAPACITY</span><b class="mono">7 L</b></div>
+                  <div><span>SERIAL</span><b class="mono">WK-4021-8837</b></div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="prod-body">
             <h3>سرخ‌کن بدون روغن کوخورک ۷ لیتری</h3>
@@ -1068,13 +1150,27 @@
           </div>
         </article>
 
-        <article class="prod">
-          <div class="prod-art">
+        <article class="prod" tabindex="0">
+          <div class="flipper">
             <span class="chip">کارت اصالت</span>
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 14h18a7 7 0 1 1 0 14H9z" /><circle cx="18" cy="21" r="4" />
-              <path d="M27 21h11" /><path d="M19 28v7a4 4 0 0 0 4 4h5" /><path d="M28 35h9" />
-            </svg>
+            <div class="flip">
+              <div class="face front">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 14h18a7 7 0 1 1 0 14H9z" /><circle cx="18" cy="21" r="4" />
+                  <path d="M27 21h11" /><path d="M19 28v7a4 4 0 0 0 4 4h5" /><path d="M28 35h9" />
+                </svg>
+              </div>
+              <div class="face back">
+                <div class="cap">RATING PLATE</div>
+                <div class="plate-rows">
+                  <div><span>MODEL</span><b class="mono">DASSLER PRO 2400</b></div>
+                  <div><span>ORIGIN</span><b class="mono">GERMANY</b></div>
+                  <div><span>POWER</span><b class="mono">220–240V · 2400W</b></div>
+                  <div><span>MOTOR</span><b class="mono">AC · 110 KM/H</b></div>
+                  <div><span>SERIAL</span><b class="mono">WK-5518-0093</b></div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="prod-body">
             <h3>سشوار حرفه‌ای داسلر ۲۴۰۰ وات</h3>
@@ -1086,82 +1182,75 @@
     </div>
   </section>
 
-  <!-- ============================================================ proof -->
-  <section class="sec" id="proof">
+  <!-- ============================================================ route -->
+  <section class="sec" id="route">
     <div class="wrap">
+      <div class="index mono">SEC 03 · CHAIN OF CUSTODY</div>
+
       <div class="sec-head">
         <div>
-          <span class="label">مسیر کالا</span>
-          <h2 style="margin-top: 12px">از ویترین اروپا تا در خانهٔ تو</h2>
-          <p>سه مرحله‌ای که هر سفارش طی می‌کند — و در هر مرحله چه چیزی برایت ثبت می‌شود.</p>
+          <h2>سریال از کجا می‌آید</h2>
+          <p>همان کدی که بالا زدی، در این سه ایستگاه ساخته و به سفارش تو قفل می‌شود.</p>
         </div>
       </div>
 
-      <div class="proc">
-        <div class="step">
-          <span class="no mono">01</span>
-          <h3>سفارش و رزرو موجودی</h3>
-          <p>
-            دستگاه از موجودی انبار برایت کنار گذاشته می‌شود و شمارهٔ سریال همان لحظه به سفارش
-            تو قفل می‌شود؛ یعنی کالایی که می‌بینی همان کالایی است که می‌رسد.
-          </p>
+      <div class="route">
+        <div class="rail">
+          <span class="fill"></span>
+          <span class="pkg" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+              <path d="M12 3 3 7.5v9L12 21l9-4.5v-9Z" /><path d="M3 7.5 12 12l9-4.5M12 12v9" />
+            </svg>
+          </span>
         </div>
 
-        <div class="step">
-          <span class="no mono">02</span>
-          <h3>بازبینی فیزیکی در بانه</h3>
-          <p>
-            کارتن باز، دستگاه روشن و سالم بودن قطعات بررسی می‌شود. مدل، ولتاژ و کشور سازنده
-            با پلاک روی بدنه مطابقت داده می‌شود.
-          </p>
-        </div>
-
-        <div class="step">
-          <span class="no mono">03</span>
-          <h3>پلمب، فاکتور و ارسال</h3>
-          <p>
-            کارتن دوباره پلمب می‌شود و همراه فاکتور رسمی و کارت اصالت راه می‌افتد. تا پانزده
-            روز بعد از تحویل، بازگشت وجه باز است.
-          </p>
+        <div class="stops">
+          <div class="stop">
+            <span class="no mono">01 · EU</span>
+            <h3>کارخانه، اروپا</h3>
+            <p>دستگاه با پلاک اصلی کارخانه خریداری می‌شود؛ همان مدل و ولتاژی که روی بدنه حک شده است.</p>
+          </div>
+          <div class="stop">
+            <span class="no mono">02 · BANEH</span>
+            <h3>انبار وانکو، بانه</h3>
+            <p>کارتن باز می‌شود، دستگاه روشن و قطعاتش شمرده می‌شود، و سریالش وارد دفتر انبار می‌شود.</p>
+          </div>
+          <div class="stop">
+            <span class="no mono">03 · YOU</span>
+            <h3>درِ خانهٔ تو</h3>
+            <p>کارتن دوباره پلمب و با فاکتور رسمی ارسال می‌شود. سریال از این لحظه به نام توست.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================ brands -->
+  <!-- =========================================================== brands -->
   <section class="sec" id="brands">
     <div class="wrap">
+      <div class="index mono">SEC 04 · BRANDS · 08</div>
+
       <div class="sec-head">
         <div>
-          <span class="label">برندها</span>
-          <h2 style="margin-top: 12px">فقط چیزی که خودمان می‌آوریم</h2>
+          <h2>فقط چیزی که خودمان می‌آوریم</h2>
           <p>هیچ برندی را واسطه نمی‌خریم؛ همین است که فهرست کوتاه است.</p>
         </div>
         <a class="more" href="#">همهٔ برندها ←</a>
       </div>
 
       <div class="brands">
-        <a href="#">AEG</a>
-        <a href="#">Bosch</a>
-        <a href="#">Bissell</a>
-        <a href="#">Kochwerk</a>
-        <a href="#">Redkey</a>
-        <a href="#">Fasdunt</a>
-        <a href="#">Dassler</a>
-        <a href="#">Gourmet Max</a>
+        <a href="#">AEG</a><a href="#">Bosch</a><a href="#">Bissell</a><a href="#">Kochwerk</a>
+        <a href="#">Redkey</a><a href="#">Fasdunt</a><a href="#">Dassler</a><a href="#">Gourmet Max</a>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================ footer -->
+  <!-- =========================================================== footer -->
   <footer class="foot" id="contact">
     <div class="wrap">
       <div class="foot-grid">
         <div>
-          <div class="brand">
-            <span class="brand-fa">وانکو</span>
-            <span class="brand-en">wanko</span>
-          </div>
+          <div class="brand"><span class="brand-fa">وانکو</span><span class="brand-en mono">wanko</span></div>
           <p class="foot-note">
             واردات و فروش لوازم خانگی اروپایی اصل. بانه، کردستان.<br />
             شنبه تا پنجشنبه، ۹ تا ۲۱.
@@ -1174,25 +1263,23 @@
             <li><a href="#cats">دسته‌بندی‌ها</a></li>
             <li><a href="#new">تازه‌ها</a></li>
             <li><a href="#brands">برندها</a></li>
-            <li><a href="#">تخفیف‌های این هفته</a></li>
           </ul>
         </div>
 
         <div>
           <h4>پشتیبانی</h4>
           <ul>
+            <li><a href="#hero">استعلام اصالت</a></li>
             <li><a href="#">پیگیری سفارش</a></li>
             <li><a href="#">شرایط بازگشت کالا</a></li>
-            <li><a href="#proof">استعلام اصالت</a></li>
-            <li><a href="#">پرسش‌های پرتکرار</a></li>
           </ul>
         </div>
 
         <div>
           <h4>تماس</h4>
           <ul>
-            <li><a class="tel num" href="tel:+989183545845">0918 354 5845</a></li>
-            <li><a class="tel num" href="tel:+988734228473">087 3422 8473</a></li>
+            <li><a class="tel" href="tel:+989183545845">0918 354 5845</a></li>
+            <li><a class="tel" href="tel:+988734228473">087 3422 8473</a></li>
             <li><a href="#">اینستاگرام <span class="mono">@wanko.ir</span></a></li>
           </ul>
         </div>
@@ -1212,12 +1299,158 @@
     root.setAttribute('lang', 'fa');
     root.setAttribute('dir', 'rtl');
 
-    /* light / dark toggle — follows the system until you touch it */
-    var btn = document.getElementById('theme');
-    btn.addEventListener('click', function () {
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    /* ---------------------------------------------------- theme toggle */
+    document.getElementById('theme').addEventListener('click', function () {
       var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var current = root.getAttribute('data-theme') || (dark ? 'dark' : 'light');
-      root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+      var now = root.getAttribute('data-theme') || (dark ? 'dark' : 'light');
+      root.setAttribute('data-theme', now === 'dark' ? 'light' : 'dark');
+    });
+
+    /* --------------------------- header turns solid once past the hero */
+    var head = document.getElementById('head');
+    var hero = document.getElementById('hero');
+    new IntersectionObserver(
+      function (e) { head.classList.toggle('stuck', !e[0].isIntersecting); },
+      { rootMargin: '-74px 0px 0px 0px', threshold: 0 }
+    ).observe(hero);
+
+    /* ------------------------------- raking light across the hero panel */
+    if (window.matchMedia('(hover: hover)').matches && !calm.matches) {
+      hero.addEventListener('pointermove', function (e) {
+        var r = hero.getBoundingClientRect();
+        hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
+        hero.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
+        hero.classList.add('lit');
+      });
+      hero.addEventListener('pointerleave', function () { hero.classList.remove('lit'); });
+    }
+
+    /* ------------------------------------------------ serial lookup */
+    var BOOK = {
+      'WK-4021-8837': {
+        brand: 'KOCHWERK · ORIGINAL',
+        name: 'سرخ‌کن بدون روغن کوخورک ۷ لیتری',
+        model: 'AF-90', origin: 'GERMANY', power: '220–240V · 1700W', warranty: '2026-07-22'
+      },
+      'WK-3390-1204': {
+        brand: 'REDKEY · ORIGINAL',
+        name: 'جارو شارژی سه‌کاره ردکی آلمان',
+        model: 'W12', origin: 'GERMANY', power: '25.9V · 450W', warranty: '2026-09-03'
+      },
+      'WK-2871-6650': {
+        brand: 'FASDUNT · ORIGINAL',
+        name: 'جارو شارژی آب و خاک فستدانت',
+        model: 'HV1', origin: 'GERMANY', power: '21.6V · 400W', warranty: '2026-08-14'
+      },
+      'WK-5518-0093': {
+        brand: 'DASSLER · ORIGINAL',
+        name: 'سشوار حرفه‌ای داسلر ۲۴۰۰ وات',
+        model: 'PRO 2400', origin: 'GERMANY', power: '220–240V · 2400W', warranty: '2026-06-30'
+      }
+    };
+
+    var plate = document.getElementById('plate');
+    var input = document.getElementById('sn');
+    var out = {
+      brand: document.getElementById('p-brand'),
+      name: document.getElementById('p-name'),
+      model: document.getElementById('p-model'),
+      origin: document.getElementById('p-origin'),
+      power: document.getElementById('p-power'),
+      serial: document.getElementById('p-serial'),
+      warranty: document.getElementById('p-warranty')
+    };
+
+    var FA = '۰۱۲۳۴۵۶۷۸۹';
+    var GLYPHS = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+
+    /* Persian digits, spaces and missing dashes all normalise to WK-0000-0000 */
+    function tidy(raw) {
+      var s = raw.replace(/[۰-۹]/g, function (d) { return FA.indexOf(d); });
+      s = s.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      return s.replace(/^([A-Z]{0,2})(\d{0,4})(\d{0,4}).*$/, function (_, a, b, c) {
+        return [a, b, c].filter(Boolean).join('-');
+      });
+    }
+
+    input.addEventListener('input', function () {
+      var at = input.selectionStart === input.value.length;
+      input.value = tidy(input.value);
+      if (at) input.setSelectionRange(input.value.length, input.value.length);
+    });
+
+    /* each field decodes out of noise instead of just appearing */
+    function decode(el, text, delay) {
+      if (calm.matches) { el.textContent = text; return; }
+      var frame = 0;
+      var total = 7;
+      setTimeout(function () {
+        var t = setInterval(function () {
+          frame++;
+          el.textContent = text.replace(/[^\s·–-]/g, function (ch, i) {
+            return i < (frame / total) * text.length
+              ? ch
+              : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+          });
+          if (frame >= total) { clearInterval(t); el.textContent = text; }
+        }, 42);
+      }, delay);
+    }
+
+    function noise(n) {
+      var s = '';
+      for (var i = 0; i < n; i++) s += GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+      return s;
+    }
+
+    function render(sn, rec) {
+      plate.classList.remove('shake');
+      plate.classList.add('busy');
+      setTimeout(function () { plate.classList.remove('busy'); }, 900);
+
+      /* wipe the previous reading so nothing stale is on screen mid-scan */
+      if (!calm.matches) {
+        ['model', 'origin', 'power', 'serial', 'warranty'].forEach(function (k) {
+          out[k].textContent = noise(out[k].textContent.length || 6);
+        });
+      }
+
+      if (!rec) {
+        plate.setAttribute('data-state', 'none');
+        out.brand.textContent = 'NOT ON RECORD';
+        out.name.textContent = 'این سریال در دفتر انبار وانکو نیست. کد ۱۲ نویسه‌ای را از پلاک پشت دستگاه دوباره بخوان، یا برایمان بفرست تا دستی بگردیم.';
+        ['model', 'origin', 'power', 'warranty'].forEach(function (k) { out[k].textContent = '—'; });
+        out.serial.textContent = sn;
+        document.getElementById('p-verdict').textContent = 'ثبت نشده';
+        if (!calm.matches) { void plate.offsetWidth; plate.classList.add('shake'); }
+        return;
+      }
+
+      plate.setAttribute('data-state', 'ok');
+      document.getElementById('p-verdict').textContent = 'ثبت‌شده در انبار وانکو';
+      out.brand.textContent = rec.brand;
+      out.name.textContent = rec.name;
+      decode(out.model, rec.model, 380);
+      decode(out.origin, rec.origin, 460);
+      decode(out.power, rec.power, 540);
+      decode(out.serial, sn, 620);
+      decode(out.warranty, rec.warranty, 700);
+    }
+
+    document.getElementById('check').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var sn = tidy(input.value);
+      if (!sn) { input.focus(); return; }
+      render(sn, BOOK[sn]);
+    });
+
+    [].forEach.call(document.querySelectorAll('.samples button'), function (b) {
+      b.addEventListener('click', function () {
+        input.value = b.dataset.sn;
+        render(b.dataset.sn, BOOK[b.dataset.sn]);
+      });
     });
   })();
 </script>
