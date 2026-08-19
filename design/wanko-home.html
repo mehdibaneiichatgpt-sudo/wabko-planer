@@ -1,4 +1,6 @@
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#101815" />
 <title>ترمینال اصالت وانکو</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -205,8 +207,10 @@
     transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .nav a:hover { opacity: 1; }
-  .nav a:hover::after { transform: scaleX(1); }
+  @media (hover: hover) {
+    .nav a:hover { opacity: 1; }
+    .nav a:hover::after { transform: scaleX(1); }
+  }
 
   .tools { display: flex; align-items: center; gap: 9px; }
 
@@ -224,7 +228,8 @@
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
-  .icon-btn:hover { opacity: 1; transform: translateY(-1px); }
+  @media (hover: hover) { .icon-btn:hover { opacity: 1; transform: translateY(-1px); } }
+  .icon-btn:active { transform: scale(0.94); opacity: 1; }
 
   /* ================================================================== hero */
   .hero {
@@ -339,10 +344,13 @@
     transition: transform 0.18s ease, box-shadow 0.25s ease, background 0.2s ease;
   }
 
-  .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(95, 211, 156, 0.22); }
+  @media (hover: hover) {
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(95, 211, 156, 0.22); }
+    .btn.ghost:hover { border-color: var(--steel-ink-2); box-shadow: none; }
+  }
 
+  .btn:active { transform: scale(0.97); }
   .btn.ghost { background: transparent; color: var(--steel-ink); border-color: var(--steel-line); }
-  .btn.ghost:hover { border-color: var(--steel-ink-2); box-shadow: none; }
 
   /* ---------------------------------------------------- authenticity stage */
   .stage {
@@ -513,7 +521,8 @@
   }
 
   .check input::placeholder { color: color-mix(in srgb, var(--steel-ink-2) 60%, transparent); }
-  .check input:hover { border-color: var(--steel-ink-2); }
+  @media (hover: hover) { .check input:hover { border-color: var(--steel-ink-2); } }
+  .check input:focus { border-color: var(--led); }
 
   .check button {
     font-family: var(--font-display);
@@ -528,7 +537,8 @@
     transition: transform 0.18s ease, filter 0.2s ease;
   }
 
-  .check button:hover { transform: translateY(-1px); filter: brightness(1.06); }
+  @media (hover: hover) { .check button:hover { transform: translateY(-1px); filter: brightness(1.06); } }
+  .check button:active { transform: scale(0.97); }
 
   .samples { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
@@ -545,7 +555,8 @@
     transition: color 0.2s ease, border-color 0.2s ease;
   }
 
-  .samples button:hover { color: var(--led); border-color: var(--led); }
+  @media (hover: hover) { .samples button:hover { color: var(--led); border-color: var(--led); } }
+  .samples button:active { color: var(--led); border-color: var(--led); }
 
   /* --------------------------------------------------------- promise strip */
   .promise {
@@ -580,7 +591,7 @@
   .sec-head p { color: var(--ink-2); font-size: 15px; margin-top: 8px; max-width: 50ch; }
 
   .more { font-family: var(--font-display); font-size: 13.5px; font-weight: 600; color: var(--accent); white-space: nowrap; border-bottom: 1px solid transparent; }
-  .more:hover { border-color: var(--accent); }
+  @media (hover: hover) { .more:hover { border-color: var(--accent); } }
 
   /* -------------------------------------------------------------- category */
   .cats {
@@ -614,12 +625,34 @@
   }
 
   .cat > * { position: relative; }
-  .cat:hover::before { transform: none; }
-  .cat:hover svg { color: var(--accent); }
+  @media (hover: hover) {
+    .cat:hover::before { transform: none; }
+    .cat:hover svg { color: var(--accent); }
+  }
+
+  /* touch: the same wipe, driven by the press instead of the pointer */
+  .cat:active::before { transform: none; }
+  .cat:active svg { color: var(--accent); }
 
   .cat svg { width: 44px; height: 44px; color: var(--ink-2); transition: color 0.3s ease; }
   .cat h3 { font-size: 17px; }
   .cat .count { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); }
+
+  .swipe-hint {
+    display: none;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
+    color: var(--ink-3);
+    margin-bottom: 12px;
+  }
+
+  .swipe-hint svg { animation: nudge 2.4s ease-in-out infinite; }
+
+  @keyframes nudge {
+    0%, 100% { transform: none; }
+    45% { transform: translateX(-5px); }
+  }
 
   /* -------------------------------------------------------------- products */
   .prods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
@@ -633,7 +666,8 @@
     transition: border-color 0.25s ease, transform 0.25s ease;
   }
 
-  .prod:hover, .prod:focus-within { border-color: var(--line-2); transform: translateY(-3px); }
+  @media (hover: hover) { .prod:hover { border-color: var(--line-2); transform: translateY(-3px); } }
+  .prod:focus-within { border-color: var(--line-2); }
 
   .flipper { height: 212px; border-bottom: 1px solid var(--line); perspective: 900px; }
 
@@ -645,7 +679,10 @@
     transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
-  .prod:hover .flip, .prod:focus-within .flip { transform: rotateY(180deg); }
+  @media (hover: hover) { .prod:hover .flip { transform: rotateY(180deg); } }
+
+  /* the tap path: a real control, so the plate is reachable on every device */
+  .prod.open .flip { transform: rotateY(180deg); }
 
   .face {
     position: absolute;
@@ -690,12 +727,33 @@
   }
 
   /* the chip belongs to the front of the card — it clears out on the flip */
-  .prod:hover .chip, .prod:focus-within .chip { opacity: 0; }
+  @media (hover: hover) { .prod:hover .chip { opacity: 0; } }
+  .prod.open .chip { opacity: 0; }
 
   .prod-body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+
+  .spec-btn {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 8px 12px;
+    margin-inline-start: -12px;
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    color: var(--accent);
+    background: transparent;
+    border: 0;
+    border-radius: var(--edge);
+    cursor: pointer;
+  }
+
+  .spec-btn svg { transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .prod.open .spec-btn svg { transform: rotate(180deg); }
+  .spec-btn:active { background: var(--panel-2); }
   .prod-body h3 { font-family: var(--font-body); font-weight: 500; font-size: 15.5px; line-height: 1.7; }
   .prod-body .mono { font-size: 11px; color: var(--ink-3); }
-  .hint { font-size: 11.5px; color: var(--ink-3); }
 
   .price {
     margin-top: auto;
@@ -784,7 +842,8 @@
     transition: color 0.22s ease, letter-spacing 0.22s ease;
   }
 
-  .brands a:hover { color: var(--ink); letter-spacing: 0.2em; }
+  @media (hover: hover) { .brands a:hover { color: var(--ink); letter-spacing: 0.2em; } }
+  .brands a:active { color: var(--ink); }
 
   /* ---------------------------------------------------------------- footer */
   .foot { background: var(--steel); color: var(--steel-ink); padding-block: 62px 28px; }
@@ -800,11 +859,86 @@
   .foot h4 { font-family: var(--font-display); font-size: 11.5px; font-weight: 600; letter-spacing: 0.16em; margin: 0 0 18px; color: var(--steel-ink-2); }
   .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 14px; }
   .foot ul a { color: var(--steel-ink); opacity: 0.82; }
-  .foot ul a:hover { opacity: 1; }
+  @media (hover: hover) { .foot ul a:hover { opacity: 1; } }
   .foot-note { color: var(--steel-ink-2); font-size: 13.5px; line-height: 2; margin-top: 16px; max-width: 34ch; }
   .tel { font-family: var(--font-mono); font-size: 15px; letter-spacing: 0.08em; }
 
   .foot-bottom { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 22px; font-size: 12.5px; color: var(--steel-ink-2); }
+
+  /* --------------------------------------------------- scroll-driven motion */
+  /* every reveal below is an enhancement: with no support the element is
+     simply visible, so nothing is ever hidden behind a scroll position */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .sec-head, .cats, .prod, .stop, .brands, .swipe-hint {
+        animation: lift linear both;
+        animation-timeline: view();
+        animation-range: entry 4% entry 46%;
+      }
+
+      .prod:nth-child(2) { animation-range: entry 7% entry 49%; }
+      .prod:nth-child(3) { animation-range: entry 10% entry 52%; }
+      .prod:nth-child(4) { animation-range: entry 13% entry 55%; }
+      .stop:nth-child(2) { animation-range: entry 8% entry 50%; }
+      .stop:nth-child(3) { animation-range: entry 12% entry 54%; }
+
+      @keyframes lift {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: none; }
+      }
+    }
+  }
+
+  /* ------------------------------------------------- thumb-zone action bar */
+  .thumb {
+    position: fixed;
+    z-index: 60;
+    inset-inline: 0;
+    bottom: 0;
+    display: none;
+    gap: 10px;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid var(--line);
+  }
+
+  .thumb button {
+    flex: 1;
+    min-height: 48px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--edge);
+    cursor: pointer;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--paper);
+  }
+
+  .thumb button.ghost { background: transparent; color: var(--accent); }
+  .thumb button:active { transform: scale(0.98); }
+
+  /* ---------------------------------------------- finger-sized hit targets */
+  @media (pointer: coarse) {
+    .samples button { min-height: 40px; padding-inline: 14px; }
+
+    .more, .brands a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    .foot ul { gap: 0; }
+
+    .foot ul a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    .nav a { padding-block: 12px; }
+  }
 
   /* ------------------------------------------------------------ responsive */
   @media (max-width: 1080px) {
@@ -816,7 +950,7 @@
   @media (max-width: 960px) {
     .hero .wrap { grid-template-columns: 1fr; gap: 34px; }
     .stage { min-height: 0; }
-    .stage-art { display: none; }
+    .stage-art { width: min(260px, 62%); opacity: 0.11; }
     .check, .plate-wrap { width: 100%; }
     .promise .wrap { grid-template-columns: repeat(2, 1fr); }
     .promise div:nth-child(3) { border-inline-start: 0; }
@@ -828,8 +962,47 @@
     .foot-grid { grid-template-columns: 1fr 1fr; }
   }
 
+  @media (max-width: 760px) {
+    /* one-hand browsing: a swipeable rail instead of a stack six screens tall */
+    .cats {
+      display: flex;
+      grid-template-columns: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 1px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .cats::-webkit-scrollbar { display: none; }
+
+    .cat {
+      flex: 0 0 72%;
+      scroll-snap-align: start;
+      min-height: 178px;
+    }
+
+    .swipe-hint { display: flex; }
+  }
+
+  /* wherever the header nav is out of reach and a finger is driving, the
+     thumb bar carries navigation — phones and tablets alike */
+  @media (pointer: coarse) and (max-width: 1080px) {
+    .thumb { display: flex; }
+    .page { padding-bottom: 78px; }
+  }
+
+  @media (max-width: 760px) {
+    /* the terminal is the point of the page — it should not sit below the
+       fold behind buttons the thumb bar already carries */
+    .cta-row { display: none; }
+    .lede { font-size: 15.5px; line-height: 1.95; }
+    .hero .wrap { padding-block: 26px 32px; gap: 26px; }
+    h1 { margin-bottom: 18px !important; }
+  }
+
   @media (max-width: 620px) {
-    .cats, .prods { grid-template-columns: 1fr; }
+    .prods { grid-template-columns: 1fr; }
     .promise .wrap { grid-template-columns: 1fr; }
     .promise div + div { border-inline-start: 0; border-top: 1px solid var(--steel-line); }
     .foot-grid { grid-template-columns: 1fr; }
@@ -925,7 +1098,7 @@
         <form class="check" id="check" autocomplete="off">
           <label for="sn"><span class="mono">SERIAL</span> کد روی پلاک پشت دستگاه — یا یکی از نمونه‌ها را بزن</label>
           <div class="check-row">
-            <input id="sn" name="sn" inputmode="latin" spellcheck="false" placeholder="WK-0000-0000" aria-describedby="samples" />
+            <input id="sn" name="sn" inputmode="numeric" spellcheck="false" placeholder="WK-0000-0000" aria-describedby="samples" />
             <button type="submit">استعلام</button>
           </div>
           <div class="samples" id="samples">
@@ -985,6 +1158,13 @@
           <p>شش خانواده‌ای که بیشترین سفارش را دارند. هر کدام فقط با برندهای اروپایی پر شده‌اند.</p>
         </div>
         <a class="more" href="#">همهٔ دسته‌ها ←</a>
+      </div>
+
+      <div class="swipe-hint" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 5 7 12l7 7" />
+        </svg>
+        برای دیدن بقیه، بکش
       </div>
 
       <div class="cats">
@@ -1052,13 +1232,13 @@
       <div class="sec-head">
         <div>
           <h2>این هفته از انبار بانه</h2>
-          <p>موجودی واقعی، نه پیش‌فروش. نشانگر را روی هر کارت ببر تا پلاک مشخصاتش را ببینی.</p>
+          <p>موجودی واقعی، نه پیش‌فروش. پلاک مشخصات هر دستگاه، یک ضربه پایین‌تر است.</p>
         </div>
         <a class="more" href="#">همهٔ محصولات ←</a>
       </div>
 
       <div class="prods">
-        <article class="prod" tabindex="0">
+        <article class="prod">
           <div class="flipper">
             <span class="chip">کارت اصالت</span>
             <div class="flip">
@@ -1085,11 +1265,17 @@
           <div class="prod-body">
             <h3>جارو شارژی سه‌کاره ردکی آلمان</h3>
             <span class="mono">REDKEY W12 · GERMANY</span>
+            <button class="spec-btn" type="button" aria-expanded="false">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" />
+              </svg>
+              <span>پلاک مشخصات</span>
+            </button>
             <div class="price"><b class="num">۲۱٬۸۰۰٬۰۰۰</b><small>تومان</small></div>
           </div>
         </article>
 
-        <article class="prod" tabindex="0">
+        <article class="prod">
           <div class="flipper">
             <span class="chip">کارت اصالت</span>
             <div class="flip">
@@ -1117,11 +1303,17 @@
           <div class="prod-body">
             <h3>جارو شارژی آب و خاک فستدانت</h3>
             <span class="mono">FASDUNT HV1 · GERMANY</span>
+            <button class="spec-btn" type="button" aria-expanded="false">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" />
+              </svg>
+              <span>پلاک مشخصات</span>
+            </button>
             <div class="price"><b class="num">۱۸٬۴۰۰٬۰۰۰</b><small>تومان</small></div>
           </div>
         </article>
 
-        <article class="prod" tabindex="0">
+        <article class="prod">
           <div class="flipper">
             <span class="chip">کارت اصالت</span>
             <div class="flip">
@@ -1146,11 +1338,17 @@
           <div class="prod-body">
             <h3>سرخ‌کن بدون روغن کوخورک ۷ لیتری</h3>
             <span class="mono">KOCHWERK AF-90 · GERMANY</span>
+            <button class="spec-btn" type="button" aria-expanded="false">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" />
+              </svg>
+              <span>پلاک مشخصات</span>
+            </button>
             <div class="price"><b class="num">۹٬۷۵۰٬۰۰۰</b><small>تومان</small></div>
           </div>
         </article>
 
-        <article class="prod" tabindex="0">
+        <article class="prod">
           <div class="flipper">
             <span class="chip">کارت اصالت</span>
             <div class="flip">
@@ -1175,6 +1373,12 @@
           <div class="prod-body">
             <h3>سشوار حرفه‌ای داسلر ۲۴۰۰ وات</h3>
             <span class="mono">DASSLER PRO 2400 · GERMANY</span>
+            <button class="spec-btn" type="button" aria-expanded="false">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" />
+              </svg>
+              <span>پلاک مشخصات</span>
+            </button>
             <div class="price"><b class="num">۴٬۳۰۰٬۰۰۰</b><small>تومان</small></div>
           </div>
         </article>
@@ -1291,6 +1495,10 @@
       </div>
     </div>
   </footer>
+  <div class="thumb">
+    <button type="button" id="go-check">استعلام سریال</button>
+    <button type="button" class="ghost" id="go-shop">دیدن محصولات</button>
+  </div>
 </div>
 
 <script>
@@ -1316,16 +1524,51 @@
       { rootMargin: '-74px 0px 0px 0px', threshold: 0 }
     ).observe(hero);
 
-    /* ------------------------------- raking light across the hero panel */
-    if (window.matchMedia('(hover: hover)').matches && !calm.matches) {
-      hero.addEventListener('pointermove', function (e) {
-        var r = hero.getBoundingClientRect();
-        hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
-        hero.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
+    /* --------------------------------- raking light across the hero panel.
+       with a pointer it tracks the cursor; on a touch screen there is no
+       cursor to track, so the scroll itself rakes the light across the metal */
+    if (!calm.matches) {
+      if (window.matchMedia('(hover: hover)').matches) {
+        hero.addEventListener('pointermove', function (e) {
+          var r = hero.getBoundingClientRect();
+          hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
+          hero.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
+          hero.classList.add('lit');
+        });
+        hero.addEventListener('pointerleave', function () { hero.classList.remove('lit'); });
+      } else {
         hero.classList.add('lit');
-      });
-      hero.addEventListener('pointerleave', function () { hero.classList.remove('lit'); });
+        var rake = function () {
+          var r = hero.getBoundingClientRect();
+          var p = Math.min(1, Math.max(0, -r.top / (r.height || 1)));
+          hero.style.setProperty('--mx', 92 - p * 104 + '%');
+          hero.style.setProperty('--my', 22 + p * 58 + '%');
+        };
+        rake();
+        window.addEventListener('scroll', rake, { passive: true });
+      }
     }
+
+    /* ------------------------ spec plate: tap to flip, on any device ---- */
+    [].forEach.call(document.querySelectorAll('.spec-btn'), function (btn) {
+      var card = btn.closest('.prod');
+      var text = btn.querySelector('span');
+      btn.addEventListener('click', function () {
+        var open = card.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        text.textContent = open ? 'برگشت به تصویر' : 'پلاک مشخصات';
+      });
+    });
+
+    /* --------------------------------- thumb-zone shortcuts (phones) ---- */
+    document.getElementById('go-check').addEventListener('click', function () {
+      document.getElementById('check').scrollIntoView({ behavior: calm.matches ? 'auto' : 'smooth', block: 'center' });
+      setTimeout(function () { document.getElementById('sn').focus({ preventScroll: true }); }, 420);
+    });
+
+    document.getElementById('go-shop').addEventListener('click', function () {
+      document.getElementById('new').scrollIntoView({ behavior: calm.matches ? 'auto' : 'smooth', block: 'start' });
+    });
 
     /* ------------------------------------------------ serial lookup */
     var BOOK = {
@@ -1370,6 +1613,7 @@
     function tidy(raw) {
       var s = raw.replace(/[۰-۹]/g, function (d) { return FA.indexOf(d); });
       s = s.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      if (s && !/^[A-Z]/.test(s)) s = 'WK' + s;
       return s.replace(/^([A-Z]{0,2})(\d{0,4})(\d{0,4}).*$/, function (_, a, b, c) {
         return [a, b, c].filter(Boolean).join('-');
       });
@@ -1439,17 +1683,25 @@
       decode(out.warranty, rec.warranty, 700);
     }
 
+    function lookup(sn) {
+      render(sn, BOOK[sn]);
+      if (window.matchMedia('(max-width: 960px)').matches) {
+        document.activeElement && document.activeElement.blur();
+        plate.scrollIntoView({ behavior: calm.matches ? 'auto' : 'smooth', block: 'center' });
+      }
+    }
+
     document.getElementById('check').addEventListener('submit', function (e) {
       e.preventDefault();
       var sn = tidy(input.value);
       if (!sn) { input.focus(); return; }
-      render(sn, BOOK[sn]);
+      lookup(sn);
     });
 
     [].forEach.call(document.querySelectorAll('.samples button'), function (b) {
       b.addEventListener('click', function () {
         input.value = b.dataset.sn;
-        render(b.dataset.sn, BOOK[b.dataset.sn]);
+        lookup(b.dataset.sn);
       });
     });
   })();
