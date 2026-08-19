@@ -1,0 +1,1223 @@
+<meta charset="utf-8" />
+<title>صفحهٔ اول وانکو</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&family=Noto+Kufi+Arabic:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+/>
+
+<style>
+  /* ---------------------------------------------------------------- tokens */
+  :root {
+    --paper: #eff2ef;
+    --panel: #ffffff;
+    --panel-2: #e7ebe8;
+    --ink: #0d1712;
+    --ink-2: #4a5a53;
+    --ink-3: #7d8d86;
+    --line: #d5ded8;
+    --line-2: #c2cec7;
+    --accent: #14543a;
+    --accent-2: #0c3a27;
+    --band: #14543a;
+    --band-ink: #e7f1ea;
+    --band-line: #2e6b4f;
+    --brass: #9c6b2c;
+    --brass-ink: #74501f;
+    --brass-soft: #e8dcc6;
+    --plate-a: #e3e8e4;
+    --plate-b: #cfd8d2;
+    --plate-ink: #2b3a33;
+    --focus: #14543a;
+
+    --font-display: 'Noto Kufi Arabic', 'Vazirmatn', Tahoma, sans-serif;
+    --font-body: 'Vazirmatn', Tahoma, system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+    --step: clamp(56px, 8vw, 116px);
+    --edge: 4px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --paper: #0a100d;
+      --panel: #101713;
+      --panel-2: #16201b;
+      --ink: #e6ede8;
+      --ink-2: #a3b3ab;
+      --ink-3: #7b8b83;
+      --line: #223029;
+      --line-2: #2d3e35;
+      --accent: #63cb9a;
+      --accent-2: #8adcb5;
+      --band: #0e3325;
+      --band-ink: #d9ece1;
+      --band-line: #1c4a36;
+      --brass: #d3a463;
+    --brass-ink: #f0cf9c;
+      --brass-soft: #33291a;
+      --plate-a: #1b2621;
+      --plate-b: #131c17;
+      --plate-ink: #b9c9c1;
+      --focus: #63cb9a;
+    }
+  }
+
+  :root[data-theme='dark'] {
+    --paper: #0a100d;
+    --panel: #101713;
+    --panel-2: #16201b;
+    --ink: #e6ede8;
+    --ink-2: #a3b3ab;
+    --ink-3: #7b8b83;
+    --line: #223029;
+    --line-2: #2d3e35;
+    --accent: #63cb9a;
+    --accent-2: #8adcb5;
+    --band: #0e3325;
+    --band-ink: #d9ece1;
+    --band-line: #1c4a36;
+    --brass: #d3a463;
+    --brass-ink: #f0cf9c;
+    --brass-soft: #33291a;
+    --plate-a: #1b2621;
+    --plate-b: #131c17;
+    --plate-ink: #b9c9c1;
+    --focus: #63cb9a;
+  }
+
+  /* ----------------------------------------------------------------- base */
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .page {
+    direction: rtl;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .page h1, .page h2, .page h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+
+  .page p { margin: 0; }
+
+  .page a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .page a:focus-visible,
+  .page button:focus-visible,
+  .page input:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    width: min(1200px, 100% - 44px);
+    margin-inline: auto;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--ink-3);
+    line-height: 1;
+  }
+
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* --------------------------------------------------------------- utility bar */
+  .util {
+    background: var(--band);
+    color: var(--band-ink);
+    font-size: 12.5px;
+  }
+
+  .util .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 38px;
+  }
+
+  .util-links {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+  }
+
+  .util a { opacity: 0.9; }
+  .util a:hover { opacity: 1; }
+
+  .util-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--brass);
+    display: inline-block;
+    margin-inline-end: 8px;
+    vertical-align: 2px;
+  }
+
+  /* --------------------------------------------------------------- header */
+  .head {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+
+  @supports (backdrop-filter: blur(8px)) {
+    .head {
+      background: color-mix(in srgb, var(--paper) 84%, transparent);
+      backdrop-filter: blur(12px) saturate(1.2);
+    }
+  }
+
+  .head .wrap {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    height: 76px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .brand-fa {
+    font-family: var(--font-display);
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-en {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.34em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+  }
+
+  .nav {
+    display: flex;
+    margin-inline-end: auto;
+    gap: 30px;
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+
+  .nav a {
+    position: relative;
+    padding-block: 6px;
+  }
+
+  .nav a::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.28s ease;
+  }
+
+  .nav a:hover { color: var(--ink); }
+  .nav a:hover::after { transform: scaleX(1); }
+
+  .head-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: var(--edge);
+    background: var(--panel);
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .icon-btn:hover { border-color: var(--line-2); color: var(--ink); }
+
+  /* --------------------------------------------------------------- hero */
+  .hero { border-bottom: 1px solid var(--line); }
+
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1.02fr 0.98fr;
+    gap: 52px;
+    align-items: center;
+    padding-block: clamp(48px, 7vw, 92px);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--line-2);
+    border-radius: 100px;
+    padding: 5px 14px 5px 12px;
+    font-size: 12px;
+    color: var(--ink-2);
+    margin-bottom: 26px;
+  }
+
+  .eyebrow .pip {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brass);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.35rem, 5.4vw, 4.05rem);
+    line-height: 1.28;
+    margin-bottom: 22px;
+  }
+
+  .hero h1 .mark {
+    position: relative;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .hero h1 .mark::after {
+    content: '';
+    position: absolute;
+    inset-inline: -2px;
+    bottom: 0.08em;
+    height: 3px;
+    background: var(--brass);
+    opacity: 0.85;
+    transform: scaleX(0);
+    transform-origin: right;
+    animation: rule 0.9s 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes rule { to { transform: scaleX(1); } }
+
+  .lede {
+    font-size: 17px;
+    color: var(--ink-2);
+    max-width: 46ch;
+    line-height: 2;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .btn {
+    font-family: var(--font-display);
+    font-size: 14.5px;
+    font-weight: 600;
+    padding: 14px 26px;
+    border-radius: var(--edge);
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--paper);
+    cursor: pointer;
+    transition: transform 0.18s ease, background 0.2s ease, color 0.2s ease;
+  }
+
+  .btn:hover { background: var(--accent-2); border-color: var(--accent-2); transform: translateY(-1px); }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--line-2);
+  }
+
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .stats {
+    display: flex;
+    gap: 0;
+    margin-top: 44px;
+    border-top: 1px solid var(--line);
+    padding-top: 22px;
+  }
+
+  .stat { padding-inline-end: 34px; }
+  .stat + .stat { padding-inline-start: 34px; border-inline-start: 1px solid var(--line); }
+
+  .stat b {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .stat span { font-size: 12.5px; color: var(--ink-3); }
+
+  /* ------------------------------------------------------- hero artwork */
+  .shot {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--edge);
+    padding: 34px;
+    min-height: 470px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .shot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(circle at 50% 42%, #000 12%, transparent 72%);
+    mask-image: radial-gradient(circle at 50% 42%, #000 12%, transparent 72%);
+  }
+
+  .shot svg { position: relative; width: min(330px, 78%); height: auto; color: var(--ink); }
+
+  .shot .draw {
+    stroke-dasharray: 1080;
+    stroke-dashoffset: 1080;
+    animation: draw 1.5s 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .shot .fade { opacity: 0; animation: fade 0.8s 1.05s ease forwards; }
+
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fade { to { opacity: 1; } }
+
+  /* -------------------------------------------------------- rating plate */
+  .plate {
+    position: absolute;
+    inset-inline-start: 26px;
+    bottom: 26px;
+    width: min(272px, 74%);
+    background-image: radial-gradient(circle at 9px 9px, var(--line-2) 2px, transparent 2.5px),
+      radial-gradient(circle at calc(100% - 9px) 9px, var(--line-2) 2px, transparent 2.5px),
+      radial-gradient(circle at 9px calc(100% - 9px), var(--line-2) 2px, transparent 2.5px),
+      radial-gradient(circle at calc(100% - 9px) calc(100% - 9px), var(--line-2) 2px, transparent 2.5px),
+      linear-gradient(150deg, var(--plate-a), var(--plate-b));
+    border: 1px solid var(--line-2);
+    border-radius: 3px;
+    padding: 15px 18px 14px;
+    color: var(--plate-ink);
+    box-shadow: 0 12px 28px rgba(9, 26, 19, 0.14);
+  }
+
+  .plate-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--line-2);
+    padding-bottom: 8px;
+    margin-bottom: 9px;
+  }
+
+  .plate-top .mono { font-size: 9.5px; letter-spacing: 0.24em; font-weight: 500; white-space: nowrap; }
+
+  .plate-rows { display: grid; gap: 3px; }
+
+  .plate-rows div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    direction: ltr;
+  }
+
+  .plate-rows span { color: var(--ink-3); }
+
+  .seal {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    color: var(--brass);
+  }
+
+  /* --------------------------------------------------------------- ticker */
+  .ticker {
+    background: var(--band);
+    color: var(--band-ink);
+    overflow: hidden;
+    border-block: 1px solid var(--band-line);
+  }
+
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: slide 42s linear infinite;
+  }
+
+  .ticker-track span {
+    display: inline-flex;
+    align-items: center;
+    gap: 26px;
+    padding-inline: 26px;
+    height: 52px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .ticker-track span::after {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--brass);
+  }
+
+  @keyframes slide { to { transform: translateX(50%); } }
+
+  /* --------------------------------------------------------------- sections */
+  .sec { padding-block: var(--step); border-bottom: 1px solid var(--line); }
+
+  .sec-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 38px;
+  }
+
+  .sec-head h2 { font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
+  .sec-head p { color: var(--ink-2); font-size: 15px; margin-top: 8px; max-width: 52ch; }
+
+  .more {
+    font-family: var(--font-display);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .more:hover { border-color: var(--accent); }
+
+  /* --------------------------------------------------------------- grid of categories */
+  .cats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--edge);
+    overflow: hidden;
+  }
+
+  .cat {
+    background: var(--panel);
+    padding: 30px 26px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: background 0.22s ease;
+  }
+
+  .cat:hover { background: var(--panel-2); }
+  .cat:hover svg { color: var(--accent); transform: translateY(-3px); }
+
+  .cat svg { width: 46px; height: 46px; color: var(--ink-2); transition: color 0.22s ease, transform 0.22s ease; }
+
+  .cat h3 { font-size: 17px; }
+  .cat .count { font-size: 12.5px; color: var(--ink-3); }
+
+  .cat .go {
+    margin-top: auto;
+    font-size: 13px;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(6px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+
+  .cat:hover .go { opacity: 1; transform: none; }
+
+  /* --------------------------------------------------------------- products */
+  .prods {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+  }
+
+  .prod {
+    border: 1px solid var(--line);
+    border-radius: var(--edge);
+    background: var(--panel);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.22s ease, transform 0.22s ease;
+  }
+
+  .prod:hover { border-color: var(--line-2); transform: translateY(-3px); }
+
+  .prod-art {
+    position: relative;
+    height: 210px;
+    display: grid;
+    place-items: center;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(160deg, var(--panel), var(--panel-2));
+  }
+
+  .prod-art svg { width: 108px; height: 108px; color: var(--ink); }
+
+  .chip {
+    position: absolute;
+    top: 12px;
+    inset-inline-start: 12px;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 5px 9px;
+    border-radius: 2px;
+    background: var(--brass-soft);
+    color: var(--brass-ink);
+    border: 1px solid color-mix(in srgb, var(--brass) 30%, transparent);
+  }
+
+  .prod-body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+
+  .prod-body h3 { font-size: 15.5px; line-height: 1.7; font-family: var(--font-body); font-weight: 500; }
+
+  .prod-body .mono { font-size: 11px; color: var(--ink-3); }
+
+  .price {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .price b {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .price small { font-size: 12px; color: var(--ink-3); }
+
+  /* --------------------------------------------------------------- process */
+  .proc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+
+  .step { padding-inline: 34px; }
+  .step:first-child { padding-inline-start: 0; }
+  .step:last-child { padding-inline-end: 0; }
+  .step + .step { border-inline-start: 1px solid var(--line); }
+
+  .step .no {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--brass);
+    letter-spacing: 0.2em;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .step h3 { font-size: 18px; margin-bottom: 10px; }
+  .step p { color: var(--ink-2); font-size: 14.5px; }
+
+  /* --------------------------------------------------------------- brands */
+  .brands {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 42px;
+  }
+
+  .brands a {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    transition: color 0.2s ease;
+  }
+
+  .brands a:hover { color: var(--ink); }
+
+  /* --------------------------------------------------------------- foot */
+  .foot {
+    background: var(--band);
+    color: var(--band-ink);
+    padding-block: 62px 30px;
+  }
+
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--band-line);
+  }
+
+  .foot h4 {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    margin: 0 0 18px;
+    opacity: 0.65;
+  }
+
+  .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 14px; }
+  .foot ul a { opacity: 0.88; }
+  .foot ul a:hover { opacity: 1; color: #fff; }
+
+  .foot .brand-fa { font-size: 24px; }
+  .foot .brand-en { color: color-mix(in srgb, var(--band-ink) 55%, transparent); }
+
+  .foot-note {
+    color: color-mix(in srgb, var(--band-ink) 62%, transparent);
+    font-size: 13.5px;
+    line-height: 2;
+    margin-top: 16px;
+    max-width: 34ch;
+  }
+
+  .tel {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    display: block;
+  }
+
+  .foot-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding-top: 22px;
+    font-size: 12.5px;
+    color: color-mix(in srgb, var(--band-ink) 60%, transparent);
+  }
+
+  /* ------------------------------------------------- responsive */
+  @media (max-width: 1040px) {
+    .prods { grid-template-columns: repeat(2, 1fr); }
+    .nav { display: none; }
+    .brand { margin-inline-end: auto; }
+  }
+
+  @media (max-width: 900px) {
+    .hero .wrap { grid-template-columns: 1fr; gap: 40px; }
+    .shot { min-height: 400px; }
+    .cats { grid-template-columns: repeat(2, 1fr); }
+    .proc { grid-template-columns: 1fr; }
+    .step { padding-inline: 0; padding-block: 26px; }
+    .step + .step { border-inline-start: 0; border-top: 1px solid var(--line); }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .util-links a:nth-child(2) { display: none; }
+  }
+
+  @media (max-width: 620px) {
+    .cats { grid-template-columns: 1fr; }
+    .prods { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr; }
+    .stats { flex-wrap: wrap; gap: 18px; }
+    .stat + .stat { border-inline-start: 0; padding-inline-start: 0; }
+    .plate { position: static; width: 100%; margin-top: 22px; }
+    .shot { min-height: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page *, .page *::before, .page *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+    .ticker-track { animation: none; }
+    .shot .draw { stroke-dashoffset: 0; }
+    .shot .fade { opacity: 1; }
+  }
+</style>
+
+<div class="page" dir="rtl" lang="fa">
+  <!-- ============================================================ util -->
+  <div class="util">
+    <div class="wrap">
+      <div><span class="util-dot"></span>ارسال تضمینی به سراسر ایران — تحویل ۲ تا ۴ روز کاری</div>
+      <div class="util-links">
+        <a href="#">پیگیری سفارش</a>
+        <a href="#">راهنمای خرید</a>
+        <a class="mono num" href="tel:+989183545845">0918 354 5845</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ header -->
+  <header class="head">
+    <div class="wrap">
+      <a class="brand" href="#">
+        <span class="brand-fa">وانکو</span>
+        <span class="brand-en">wanko</span>
+      </a>
+
+      <nav class="nav">
+        <a href="#cats">دسته‌بندی‌ها</a>
+        <a href="#new">تازه‌ها</a>
+        <a href="#proof">اصالت کالا</a>
+        <a href="#brands">برندها</a>
+        <a href="#contact">تماس</a>
+      </nav>
+
+      <div class="head-tools">
+        <button class="icon-btn" aria-label="جست‌وجو">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M16.5 16.5 21 21" stroke-linecap="round" />
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="سبد خرید">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M4 7h16l-1.4 12.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8Z" stroke-linejoin="round" />
+            <path d="M9 7a3 3 0 0 1 6 0" stroke-linecap="round" />
+          </svg>
+        </button>
+        <button class="icon-btn" id="theme" aria-label="حالت روشن و تاریک">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================ hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow"><span class="pip"></span> واردات مستقیم • بانه، کردستان</span>
+
+        <h1>لوازم خانگی اروپایی،<br />با <span class="mark">شناسنامهٔ کالا</span>.</h1>
+
+        <p class="lede">
+          هر دستگاهی که از وانکو می‌خری با مدل، سریال و کشور سازنده روی کارت اصالت ثبت
+          می‌شود. اگر پسند نکردی، پانزده روز وقت داری پس بدهی — بدون پرسش.
+        </p>
+
+        <div class="cta-row">
+          <button class="btn">دیدن محصولات</button>
+          <button class="btn ghost">اصالت را چطور ثابت می‌کنیم؟</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><b class="num">۳۴ هزار</b><span>مشتری و دنبال‌کننده</span></div>
+          <div class="stat"><b class="num">۱۵ روز</b><span>حق بازگشت وجه</span></div>
+          <div class="stat"><b class="num">۱۲ ماه</b><span>سرویس رایگان</span></div>
+        </div>
+      </div>
+
+      <!-- artwork: cordless vacuum, drawn as line art -->
+      <div class="shot">
+        <svg viewBox="0 0 300 344" fill="none" stroke="currentColor" stroke-width="1.7"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path class="draw"
+                d="M86 34h128a26 26 0 0 1 26 26v212a26 26 0 0 1-26 26H86a26 26 0 0 1-26-26V60a26 26 0 0 1 26-26Z" />
+          <g class="fade">
+            <path d="M60 124h180" />
+            <rect x="88" y="60" width="80" height="40" rx="10" />
+            <path d="M104 74h30M104 86h46" />
+            <circle cx="206" cy="80" r="17" />
+            <path d="M206 68v9" />
+            <path d="M78 152h144a12 12 0 0 1 12 12v90a12 12 0 0 1-12 12H78a12 12 0 0 1-12-12v-90a12 12 0 0 1 12-12Z" />
+            <path d="M120 198h60a10 10 0 0 1 0 20h-60a10 10 0 0 1 0-20Z" />
+            <path d="M84 298v14M216 298v14" />
+            <path d="M132 18c0 8-8 8-8 16M150 12c0 9-8 9-8 17M168 18c0 8-8 8-8 16" opacity="0.55" />
+          </g>
+        </svg>
+
+        <div class="plate">
+          <div class="plate-top">
+            <span class="mono">KOCHWERK · ORIGINAL</span>
+            <span class="seal">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                <path d="m5 12.5 4.5 4.5L19 7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              تأیید شد
+            </span>
+          </div>
+          <div class="plate-rows">
+            <div><span>MODEL</span><em class="mono" style="font-style: normal">AF-90</em></div>
+            <div><span>ORIGIN</span><em class="mono" style="font-style: normal">GERMANY</em></div>
+            <div><span>POWER</span><em class="mono" style="font-style: normal">220–240V · 1700W</em></div>
+            <div><span>SERIAL</span><em class="mono" style="font-style: normal">WK-4021-8837</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ticker -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>اصالت کالا تضمینی</span>
+      <span>۱۵ روز بازگشت وجه</span>
+      <span>یک سال سرویس رایگان</span>
+      <span>فاکتور رسمی</span>
+      <span>ارسال تضمینی</span>
+      <span>اصالت کالا تضمینی</span>
+      <span>۱۵ روز بازگشت وجه</span>
+      <span>یک سال سرویس رایگان</span>
+      <span>فاکتور رسمی</span>
+      <span>ارسال تضمینی</span>
+    </div>
+  </div>
+
+  <!-- ============================================================ categories -->
+  <section class="sec" id="cats">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="label">دسته‌بندی</span>
+          <h2 style="margin-top: 12px">از کجا شروع کنیم؟</h2>
+          <p>شش خانواده‌ای که بیشترین سفارش را دارند. هر کدام فقط با برندهای اروپایی پر شده‌اند.</p>
+        </div>
+        <a class="more" href="#">همهٔ دسته‌ها ←</a>
+      </div>
+
+      <div class="cats">
+        <a class="cat" href="#">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 4h6a5 5 0 0 1 5 5v5H24z" />
+            <path d="M18 14h18a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3Z" />
+            <circle cx="27" cy="21" r="4.5" />
+            <path d="M22 28 16 39" />
+            <path d="M7 39h16a2 2 0 0 1 2 2v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-2a2 2 0 0 1 2-2Z" />
+          </svg>
+          <div><h3>جارو شارژی</h3><div class="count num">۲۸ محصول</div></div>
+          <span class="go">دیدن ←</span>
+        </a>
+
+        <a class="cat" href="#">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 14h26a3 3 0 0 1 3 3v18a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V17a3 3 0 0 1 3-3Z" />
+            <path d="M16 14V9h16v5" /><path d="M14 24h20" /><circle cx="24" cy="31" r="3" />
+          </svg>
+          <div><h3>سرخ‌کن بدون روغن</h3><div class="count num">۱۹ محصول</div></div>
+          <span class="go">دیدن ←</span>
+        </a>
+
+        <a class="cat" href="#">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 35h12a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-3a2 2 0 0 1 2-2Z" />
+            <path d="M15 35V24c0-5 4-9 9-9h3" />
+            <path d="M31 15h4a6 6 0 0 1 6 6v10a3 3 0 0 1-3 3H29a3 3 0 0 1-3-3V21a6 6 0 0 1 5-6Z" />
+            <circle cx="31" cy="38" r="2" /><circle cx="38" cy="38" r="2" />
+          </svg>
+          <div><h3>جاروبرقی</h3><div class="count num">۲۲ محصول</div></div>
+          <span class="go">دیدن ←</span>
+        </a>
+
+        <a class="cat" href="#">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 12h18a8 8 0 0 1 0 16H10z" /><circle cx="19" cy="20" r="4" />
+            <path d="M28 20h10" /><path d="M20 28v8a4 4 0 0 0 4 4h6" /><path d="M30 36h8" />
+          </svg>
+          <div><h3>سشوار و حالت‌دهنده</h3><div class="count num">۱۴ محصول</div></div>
+          <span class="go">دیدن ←</span>
+        </a>
+
+        <a class="cat" href="#">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20h26v10a8 8 0 0 1-8 8H19a8 8 0 0 1-8-8z" /><path d="M8 20h32" />
+            <path d="M11 25H6M37 25h5" />
+            <path d="M20 13c0-3 3-3 3-6M27 15c0-3 3-3 3-6" opacity="0.6" />
+          </svg>
+          <div><h3>لوازم پخت‌وپز</h3><div class="count num">۳۶ محصول</div></div>
+          <span class="go">دیدن ←</span>
+        </a>
+
+        <a class="cat" href="#">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 8h8v8h-8z" /><path d="M24 16v14" /><path d="M12 30h24v6a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" />
+            <path d="M16 36h16" /><path d="M31 12c4 2 6 5 6 9" />
+          </svg>
+          <div><h3>کف‌شوی و بخارشوی</h3><div class="count num">۱۱ محصول</div></div>
+          <span class="go">دیدن ←</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ products -->
+  <section class="sec" id="new">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="label">تازه رسیده</span>
+          <h2 style="margin-top: 12px">این هفته از انبار بانه</h2>
+          <p>موجودی واقعی، نه پیش‌فروش. هر کدام با کارتن پلمب و کارت اصالت تحویل داده می‌شود.</p>
+        </div>
+        <a class="more" href="#">همهٔ محصولات ←</a>
+      </div>
+
+      <div class="prods">
+        <article class="prod">
+          <div class="prod-art">
+            <span class="chip">کارت اصالت</span>
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M24 4h6a5 5 0 0 1 5 5v5H24z" />
+              <path d="M18 14h18a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3Z" />
+              <circle cx="27" cy="21" r="4.5" />
+              <path d="M22 28 16 39" />
+              <path d="M7 39h16a2 2 0 0 1 2 2v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-2a2 2 0 0 1 2-2Z" />
+            </svg>
+          </div>
+          <div class="prod-body">
+            <h3>جارو شارژی سه‌کاره ردکی آلمان</h3>
+            <span class="mono">REDKEY W12 · GERMANY</span>
+            <div class="price"><b class="num">۲۱٬۸۰۰٬۰۰۰</b><small>تومان</small></div>
+          </div>
+        </article>
+
+        <article class="prod">
+          <div class="prod-art">
+            <span class="chip">کارت اصالت</span>
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 14h20a6 6 0 0 1 6 6v12a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V20a6 6 0 0 1 6-6Z" />
+              <path d="M18 14V9a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v5" />
+              <path d="M12 26c3 0 3 2 6 2s3-2 6-2 3 2 6 2 3-2 6-2" />
+              <circle cx="16" cy="40" r="2" /><circle cx="32" cy="40" r="2" />
+              <path d="M40 22h2a4 4 0 0 1 4 4v6" />
+            </svg>
+          </div>
+          <div class="prod-body">
+            <h3>جارو شارژی آب و خاک فستدانت</h3>
+            <span class="mono">FASDUNT HV1 · GERMANY</span>
+            <div class="price"><b class="num">۱۸٬۴۰۰٬۰۰۰</b><small>تومان</small></div>
+          </div>
+        </article>
+
+        <article class="prod">
+          <div class="prod-art">
+            <span class="chip">کارت اصالت</span>
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 12h24a2 2 0 0 1 2 2v20a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V14a2 2 0 0 1 2-2Z" />
+              <path d="M16 12V8h16v4" /><path d="M14 26h20" /><circle cx="24" cy="32" r="3" /><path d="M17 20h14" />
+            </svg>
+          </div>
+          <div class="prod-body">
+            <h3>سرخ‌کن بدون روغن کوخورک ۷ لیتری</h3>
+            <span class="mono">KOCHWERK AF-90 · GERMANY</span>
+            <div class="price"><b class="num">۹٬۷۵۰٬۰۰۰</b><small>تومان</small></div>
+          </div>
+        </article>
+
+        <article class="prod">
+          <div class="prod-art">
+            <span class="chip">کارت اصالت</span>
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 14h18a7 7 0 1 1 0 14H9z" /><circle cx="18" cy="21" r="4" />
+              <path d="M27 21h11" /><path d="M19 28v7a4 4 0 0 0 4 4h5" /><path d="M28 35h9" />
+            </svg>
+          </div>
+          <div class="prod-body">
+            <h3>سشوار حرفه‌ای داسلر ۲۴۰۰ وات</h3>
+            <span class="mono">DASSLER PRO 2400 · GERMANY</span>
+            <div class="price"><b class="num">۴٬۳۰۰٬۰۰۰</b><small>تومان</small></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ proof -->
+  <section class="sec" id="proof">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="label">مسیر کالا</span>
+          <h2 style="margin-top: 12px">از ویترین اروپا تا در خانهٔ تو</h2>
+          <p>سه مرحله‌ای که هر سفارش طی می‌کند — و در هر مرحله چه چیزی برایت ثبت می‌شود.</p>
+        </div>
+      </div>
+
+      <div class="proc">
+        <div class="step">
+          <span class="no mono">01</span>
+          <h3>سفارش و رزرو موجودی</h3>
+          <p>
+            دستگاه از موجودی انبار برایت کنار گذاشته می‌شود و شمارهٔ سریال همان لحظه به سفارش
+            تو قفل می‌شود؛ یعنی کالایی که می‌بینی همان کالایی است که می‌رسد.
+          </p>
+        </div>
+
+        <div class="step">
+          <span class="no mono">02</span>
+          <h3>بازبینی فیزیکی در بانه</h3>
+          <p>
+            کارتن باز، دستگاه روشن و سالم بودن قطعات بررسی می‌شود. مدل، ولتاژ و کشور سازنده
+            با پلاک روی بدنه مطابقت داده می‌شود.
+          </p>
+        </div>
+
+        <div class="step">
+          <span class="no mono">03</span>
+          <h3>پلمب، فاکتور و ارسال</h3>
+          <p>
+            کارتن دوباره پلمب می‌شود و همراه فاکتور رسمی و کارت اصالت راه می‌افتد. تا پانزده
+            روز بعد از تحویل، بازگشت وجه باز است.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ brands -->
+  <section class="sec" id="brands">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="label">برندها</span>
+          <h2 style="margin-top: 12px">فقط چیزی که خودمان می‌آوریم</h2>
+          <p>هیچ برندی را واسطه نمی‌خریم؛ همین است که فهرست کوتاه است.</p>
+        </div>
+        <a class="more" href="#">همهٔ برندها ←</a>
+      </div>
+
+      <div class="brands">
+        <a href="#">AEG</a>
+        <a href="#">Bosch</a>
+        <a href="#">Bissell</a>
+        <a href="#">Kochwerk</a>
+        <a href="#">Redkey</a>
+        <a href="#">Fasdunt</a>
+        <a href="#">Dassler</a>
+        <a href="#">Gourmet Max</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ footer -->
+  <footer class="foot" id="contact">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <div class="brand">
+            <span class="brand-fa">وانکو</span>
+            <span class="brand-en">wanko</span>
+          </div>
+          <p class="foot-note">
+            واردات و فروش لوازم خانگی اروپایی اصل. بانه، کردستان.<br />
+            شنبه تا پنجشنبه، ۹ تا ۲۱.
+          </p>
+        </div>
+
+        <div>
+          <h4>فروشگاه</h4>
+          <ul>
+            <li><a href="#cats">دسته‌بندی‌ها</a></li>
+            <li><a href="#new">تازه‌ها</a></li>
+            <li><a href="#brands">برندها</a></li>
+            <li><a href="#">تخفیف‌های این هفته</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>پشتیبانی</h4>
+          <ul>
+            <li><a href="#">پیگیری سفارش</a></li>
+            <li><a href="#">شرایط بازگشت کالا</a></li>
+            <li><a href="#proof">استعلام اصالت</a></li>
+            <li><a href="#">پرسش‌های پرتکرار</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>تماس</h4>
+          <ul>
+            <li><a class="tel num" href="tel:+989183545845">0918 354 5845</a></li>
+            <li><a class="tel num" href="tel:+988734228473">087 3422 8473</a></li>
+            <li><a href="#">اینستاگرام <span class="mono">@wanko.ir</span></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="foot-bottom">
+        <span>© ۱۴۰۵ فروشگاه وانکو — همهٔ حقوق محفوظ است.</span>
+        <span class="mono">WANKO.IR</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    root.setAttribute('lang', 'fa');
+    root.setAttribute('dir', 'rtl');
+
+    /* light / dark toggle — follows the system until you touch it */
+    var btn = document.getElementById('theme');
+    btn.addEventListener('click', function () {
+      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var current = root.getAttribute('data-theme') || (dark ? 'dark' : 'light');
+      root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    });
+  })();
+</script>
